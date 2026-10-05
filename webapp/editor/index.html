@@ -267,14 +267,57 @@
           <button id="libsave" data-t="saveToLib" data-ic="port_disk"></button>
           <button id="libimport" data-t="import" data-ic="symbol_upload"></button>
           <button id="libexport" data-t="exportLib" data-ic="symbol_download"></button>
-          <input type="file" id="libfile" accept=".json,application/json" multiple hidden>
+          <input type="file" id="libfile" accept=".json,.syx,.sysex,application/json" multiple hidden>
           <span class="dim" id="libcount"></span>
         </p>
         <p class="bar">
-          <input id="preseturl" type="url" placeholder="https://…/presets.json" aria-label="External preset JSON URL">
+          <input id="preseturl" type="url" placeholder="https://…/presets.json 或 rom1a.syx" aria-label="External preset JSON or DX7 SysEx URL">
           <button id="preseturlimport">导入预设链接 / Import URL</button>
-          <span class="dim">JSON 直链；若网站禁止跨站读取，请下载后用 Import 导入。</span>
+          <span class="dim">JSON / DX7 SYX 直链；若网站禁止跨站读取，请下载后用 Import 导入。</span>
         </p>
+        <details><summary>DX7 六算子详细编辑 / Six-operator editor</summary>
+          <p class="dim">先选择或试听 DX7 音色，再读取参数。Apply 只改变当前试听音色；用 Quick replace 保存到选定槽位。Key curves: 0 −LIN, 1 −EXP, 2 +EXP, 3 +LIN. LFO: TRI, SAW↓, SAW↑, SQR, SIN, S&amp;H.</p>
+          <p class="bar"><button id="dxread">读取当前 DX7 / Read</button><button id="dxapply">应用并试听 / Apply</button></p>
+          <div id="dxdetail"></div>
+        </details>
+        <details><summary>外部音色来源 / Preset sources</summary>
+          <p class="dim">DX7 SYX、FM-1+VA 备份中的 FM，以及 SLOOP / Felucca JSON 可导入。Baud Girl VA、SF2、DX7X、FXP 尚不支持直接转换。</p>
+          <p class="bar"><select id="presetsource" aria-label="DX7 preset source">
+            <option value="">选择音色库 / Choose preset library</option>
+<option value="presets/analog.json">本项目分类库 · ANALOG JSON</option>
+<option value="presets/digital.json">本项目分类库 · DIGITAL JSON</option>
+<option value="presets/phase.json">本项目分类库 · PHASE JSON</option>
+<option value="presets/lofi.json">本项目分类库 · LOFI JSON</option>
+<option value="presets/sample.json">本项目分类库 · SAMPLE JSON</option>
+<option value="presets/voice.json">本项目分类库 · VOICE JSON</option>
+<option value="presets/trio.json">本项目分类库 · TRIO JSON</option>
+<option value="presets/wheel.json">本项目分类库 · WHEEL JSON</option>
+<option value="presets/grain.json">本项目分类库 · GRAIN JSON</option>
+<option value="presets/pluck.json">本项目分类库 · PLUCK JSON</option>
+<option value="presets/addit.json">本项目分类库 · ADDIT JSON</option>
+<option value="presets/dx7.json">本项目分类库 · DX7 JSON</option>
+<option value="presets/va.json">本项目分类库 · VA JSON</option>
+<option value="presets/ksdrum.json">本项目分类库 · KSDRUM JSON</option>
+<option value="presets/kswire.json">本项目分类库 · KSWIRE JSON</option>
+<option value="presets/kscomb.json">本项目分类库 · KSCOMB JSON</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom1a.syx">Yamaha Black Boxes · ROM1A</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom1b.syx">Yamaha Black Boxes · ROM1B</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom2a.syx">Yamaha Black Boxes · ROM2A</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom2b.syx">Yamaha Black Boxes · ROM2B</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom3a.syx">Yamaha Black Boxes · ROM3A</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom3b.syx">Yamaha Black Boxes · ROM3B</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom4a.syx">Yamaha Black Boxes · ROM4A</option>
+<option value="https://yamahablackboxes.com/patches/dx7/factory/rom4b.syx">Yamaha Black Boxes · ROM4B</option>
+          </select><button id="presetsourceuse">填入链接 / Use URL</button></p>
+          <p><a href="https://yamahablackboxes.com/collection/yamaha-dx7-synthesizer/patches/" target="_blank" rel="noopener noreferrer">DX7 SYX · Yamaha Black Boxes</a> ·
+          <a href="https://github.com/visualizersdotnl/Yamaha-DX7-patch-library" target="_blank" rel="noopener noreferrer">DX7 / Dexed library</a> ·
+          <a href="https://github.com/Caskexe/DX" target="_blank" rel="noopener noreferrer">Caskexe · SF2 / DX7X（非直接导入）</a></p>
+          <p><a href="https://github.com/isod89/sloop-fm1" target="_blank" rel="noopener noreferrer">SLOOP</a> ·
+          <a href="https://github.com/hugelton/Felucca" target="_blank" rel="noopener noreferrer">Felucca · 导出 JSON</a> ·
+          <a href="https://baudgirl.com/work/FM-1+VA/presets" target="_blank" rel="noopener noreferrer">Baud Girl VA（待转换）</a> ·
+          <a href="https://github.com/surge-synthesizer/OB-Xf" target="_blank" rel="noopener noreferrer">OB-Xf（音色设计参考）</a> ·
+          <a href="https://freesound.org/" target="_blank" rel="noopener noreferrer">采样 · Freesound（Samples 页）</a></p>
+        </details>
       </div>
       <div>
         <h2 data-t="bank" data-ic="port_disk"></h2>
@@ -319,7 +362,7 @@
     </div>
   </section>
 
-  <footer>ALG-02 · Developed by coreshaw · <a href="https://github.com/shaw-core/Sloop_ALG02" target="_blank" rel="noopener">shaw-core/Sloop_ALG02</a><br>SLOOP, based on Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>. GPL-3.0.<br>
+  <footer>ALG-03 · Developed by coreshaw · <a href="https://github.com/shaw-core/Sloop_ALG02" target="_blank" rel="noopener">shaw-core/Sloop_ALG02</a><br>SLOOP, based on Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>. GPL-3.0.<br>
     <span data-t="foot"></span> M-VAVE and FM-1 are trademarks of their respective owners.<br>
     <a href="FUKIAI-LICENSE.txt" data-t="iconsCredit"></a></footer>
 </main>
@@ -330,7 +373,7 @@
 const HDR = [0x7D, 0x46, 0x4C];
 const CMD = { INFO: 1, GET: 2, SET: 3, DUMP: 4, DESC: 5, STEP_GET: 6, STEP_SET: 7, PRESET: 8, PROJECT: 9, NAMES: 10,
   SMP_BEGIN: 11, SMP_WRITE: 12, SMP_END: 13, SMP_ERASE: 14, SMP_INFO: 15,
-  UP_LIST: 16, UP_GET: 17, UP_PUT: 18, UP_STORE: 19, UP_LOAD: 20, UP_ERASE: 21,
+  UP_LIST: 16, UP_GET: 17, UP_PUT: 18, UP_STORE: 19, UP_LOAD: 20, UP_ERASE: 21, XPATCH: 34,
   WATCH: 22, CHANGED: 23, RELOAD: 24, PING: 25, STEP_CHANGED: 26,
   TRACK: 27, TRACK_MIX: 28, TRACK_DUMP: 29, TRACK_STEP: 30,
   TRACK_PARAM: 31, TRACK_CHANGED: 32,
@@ -447,7 +490,13 @@ const parse = {
     const o = { slot: r.b(), used: r.b(), engine: r.b(), name: r.s(), p: [], pattern: [] };
     for (let i = 0; i < info.pcount; i++) o.p.push(r.v());
     for (let i = 0; i < UP.PAT; i++) o.pattern.push([r.b(), r.b()]);
+    if (a.length - r.i === 128) o.xpatch = a.slice(r.i);
     return o;
+  },
+  [CMD.XPATCH](a) {
+    if (a.length !== 130) throw new Error("short extended patch reply");
+    if (a[1]) throw new Error("设备拒绝扩展音色 / Extended patch rejected");
+    return { op: a[0], xpatch: a.slice(2) };
   },
   [CMD.UP_PUT](a) { return parse[CMD.SMP_BEGIN](a); },
   [CMD.UP_STORE](a) { return parse[CMD.SMP_BEGIN](a); },
@@ -530,10 +579,11 @@ const req = {
   smpErase: (s) => [CMD.SMP_ERASE, [s & 0x7F]],
   smpInfo: () => [CMD.SMP_INFO, []],
   upList: (start, count) => [CMD.UP_LIST, [start & 0x7F, Math.max(1, Math.min(UP.LIST_MAX, count | 0))]],
+  xpatch: (x) => [CMD.XPATCH, x ? [1, ...checkXPatch(x)] : [0]],
   upGet: (s) => [CMD.UP_GET, [s & 0x7F]],
   /* patch: {engine, name, p: P_COUNT values, pattern: 16 x [note, flags]} */
   upPut: (s, pt) => [CMD.UP_PUT, [s & 0x7F, pt.engine & 0x7F, ...strEnc(upName(pt.name)), ...pt.p.flatMap((v) => v14enc(v ?? 0)),
-    ...Array.from({ length: UP.PAT }, (_, i) => { const x = (pt.pattern || [])[i] || [0, 0]; return [x[0] & 0x7F, x[1] & 7]; }).flat()]],
+    ...Array.from({ length: UP.PAT }, (_, i) => { const x = (pt.pattern || [])[i] || [0, 0]; return [x[0] & 0x7F, x[1] & 7]; }).flat(), ...(pt.xpatch ? checkXPatch(pt.xpatch) : [])]],
   upStore: (s, name) => [CMD.UP_STORE, [s & 0x7F, ...strEnc(name ? upName(name) : "")]],   /* "": the device names it ("ANALOG 07") */
   upLoad: (s) => [CMD.UP_LOAD, [s & 0x7F]],
   upErase: (s) => [CMD.UP_ERASE, [s & 0x7F]],
@@ -1083,6 +1133,100 @@ function stepsFromPattern(pat) {
 }
 const patternUsed = (pat) => !!pat && pat.some((x) => x && x[0]);
 
+/* ALG03 external voice import. Never transmit an uploaded SysEx frame to hardware. */
+function checkXPatch(x) {
+  if ((!Array.isArray(x) && !(x instanceof Uint8Array)) || x.length !== 128 ||
+      Array.from(x).some(v => !Number.isInteger(v) || v < 0 || v > 127))
+    throw new Error("DX7 音色必须包含 128 个 7-bit 字节 / Invalid DX7 voice");
+  return Array.from(x);
+}
+function dx7PackVoice(v) {
+  if (v.length !== 155) throw new Error("Invalid DX7 single voice length");
+  const b = [];
+  for (let k = 0; k < 6; k++) {
+    const o = v.slice(k * 21, k * 21 + 21);
+    b.push(...o.slice(0, 11), (o[11] & 3) | (o[12] & 3) << 2,
+      (o[13] & 7) | (o[20] & 15) << 3, (o[14] & 3) | (o[15] & 7) << 2,
+      o[16], (o[17] & 1) | (o[18] & 31) << 1, o[19]);
+  }
+  b.push(...v.slice(126, 135), (v[135] & 7) | (v[136] & 1) << 3,
+    ...v.slice(137, 141), (v[141] & 1) | (v[142] & 7) << 1 | (v[143] & 7) << 4,
+    v[144], ...v.slice(145, 155));
+  return checkXPatch(b);
+}
+function readDX7Sysex(bytes, ctx, source = "") {
+  const voices = [];
+  let off = 0;
+  while (off < bytes.length) {
+    if (bytes[off] !== 240) throw new Error("不是标准 DX7 SysEx；不支持 SF2 / DX7X / Not a DX7 SysEx file");
+    const end = bytes.indexOf(247, off + 1);
+    if (end < 0) throw new Error("DX7 SysEx 未结束 / Truncated SysEx");
+    const f = bytes.slice(off + 1, end);
+    if (f.length < 6 || f.some(b => b > 127) || f[0] !== 0x43 || f[1] > 15)
+      throw new Error("不是 Yamaha DX7 bulk voice 数据 / Unsupported SysEx header");
+    const count = f[3] * 128 + f[4], data = f.slice(5, -1);
+    if (count !== data.length || !((f[2] === 9 && count === 4096) || (f[2] === 0 && count === 155)))
+      throw new Error("只支持 DX7 单音色或 32 音色库 / Expected DX7 single voice or 32-voice bank");
+    if ((data.reduce((n, b) => n + b, 0) + f.at(-1)) % 128)
+      throw new Error("DX7 校验和错误 / DX7 checksum mismatch");
+    if (f[2] === 0) voices.push(dx7PackVoice(Array.from(data)));
+    else for (let i = 0; i < 32; i++) voices.push(checkXPatch(data.slice(i * 128, (i + 1) * 128)));
+    if (voices.length > 4096) throw new Error("一次最多导入 4096 个音色 / Import at most 4096 voices");
+    off = end + 1;
+  }
+  if (!voices.length) throw new Error("空 DX7 文件 / Empty DX7 file");
+  const engines = ctx.engines?.length ? ctx.engines :
+    ["ANALOG", "DIGITAL", "PHASE", "LOFI", "SAMPLE", "VOICE", "TRIO", "WHEEL", "GRAIN", "PLUCK", "ADDIT", "DX7", "VA", "KSDRUM", "KSWIRE", "KSCOMB"];
+  const engine = engines.indexOf("DX7"), pe0 = ctx.pe0 ?? 50;
+  if (engine < 0) throw new Error("设备需要安装 ALG03 DX7 固件 / Device needs ALG03 DX7 firmware");
+  return { format: LIB.FORMAT, version: LIB.VERSION, kind: "library", pE0: pe0,
+    engines, paramLabels: ctx.keys || [], patches: voices.map((xpatch, i) => {
+      const params = Array(ctx.keys?.length || 58).fill(null);
+      params.splice(pe0, 8, (xpatch[110] & 31) + 1, xpatch[111] & 7, 64, 0, 0, 0, 0, 63);
+      const name = String.fromCharCode(...xpatch.slice(118)).replace(/[^\x20-\x7e]/g, " ").trim() || `DX7 ${i + 1}`;
+      return { name, engine, engineName: "DX7", params, xpatch, source, tags: ["DX7", "external"] };
+    }) };
+}
+/* Baud Girl FM-1+VA backup/write frames: documented independently by fm1-dx7-patch-importer.
+ * Import FM voices only. VA's opaque voice/settings bytes must not be treated as a DX7 patch. */
+function readFM1PresetSysex(bytes, ctx, source = "") {
+  const voices = [], slots = new Set(); let skipped = 0;
+  if (!bytes.length || bytes.length % 231) throw new Error("FM-1+VA 预设帧应为 231 字节 / Invalid FM-1 preset length");
+  for (let off = 0; off < bytes.length; off += 231) {
+    const f = bytes.slice(off, off + 231), payload = f.slice(6, 229);
+    if (f[0] !== 240 || f[1] !== 67 || f[2] !== 0 || f[3] !== 125 || f[4] !== 4 || f[5] > 127 || f[230] !== 247 ||
+        f.slice(1, 230).some(b => b > 127) || slots.has(f[5])) throw new Error("FM-1+VA 帧头或槽号无效 / Invalid FM-1 preset frame");
+    slots.add(f[5]);
+    if ((payload.reduce((sum, b) => sum + (~b & 127), 0) & 127) !== f[229]) throw new Error("FM-1+VA 校验和错误 / FM-1 checksum mismatch");
+    const rec = []; const packed = payload.slice(155);
+    for (let i = 0; i < packed.length;) {
+      const n = Math.min(7, 59 - rec.length), high = packed[i++];
+      if (!n || high >> n) throw new Error("FM-1+VA 设置记录错误 / Invalid packed settings record");
+      for (let bit = 0; bit < n; bit++) rec.push(packed[i++] | (high >> bit & 1) << 7);
+    }
+    if (rec.length !== 59) throw new Error("Short FM-1 settings record");
+    if (rec[18] !== 3) { skipped++; continue; } // 0x5a = VA; unknown markers also stay out.
+    voices.push(payload.slice(0, 155));
+  }
+  if (!voices.length) throw new Error(`该文件含 ${skipped} 个 VA / 未知音色，尚不能转换 / No importable FM voices; VA conversion unavailable`);
+  const frames = [];
+  for (const v of voices) frames.push(240, 67, 0, 0, 1, 27, ...v, (-v.reduce((a, b) => a + b, 0)) & 127, 247);
+  const out = readDX7Sysex(Uint8Array.from(frames), ctx, source);
+  out.sourceSkipped = skipped;
+  out.patches.forEach(p => p.tags.push("FM-1 backup", "FM only"));
+  return out;
+}
+
+function readExternalPresets(bytes, ctx, source = "") {
+  if (!bytes.length || bytes.length > 4 * 1024 * 1024) throw new Error("预设文件为空或超过 4 MiB / Empty or oversized preset file");
+  if (bytes[0] === 240 && bytes[3] === 125 && bytes[4] === 4) return readFM1PresetSysex(bytes, ctx, source);
+  if (bytes[0] === 240) return readDX7Sysex(bytes, ctx, source);
+  let obj;
+  try { obj = JSON.parse(new TextDecoder().decode(bytes)); }
+  catch { throw new Error("请导入 SLOOP / Felucca JSON 或标准 DX7 SYX；SF2、DX7X、Baud Girl VA 暂不支持 / Unsupported preset format"); }
+  return obj;
+}
+
 function cleanPatch(pt) {
   const now = new Date().toISOString();
   const pat = Array.isArray(pt.pattern) && pt.pattern.length
@@ -1096,6 +1240,8 @@ function cleanPatch(pt) {
     tags: Array.isArray(pt.tags) ? [...new Set(pt.tags.map((x) => String(x).trim()).filter(Boolean))] : [],
     created: pt.created || now, modified: pt.modified || pt.created || now,
   };
+  if (pt.xpatch != null) o.xpatch = checkXPatch(pt.xpatch);
+  if (pt.source) o.source = String(pt.source);
   if (Number.isInteger(pt.slot)) o.slot = pt.slot;
   return o;
 }
@@ -1110,6 +1256,8 @@ function libraryFile(kind, patches, ctx) {
       const c = cleanPatch(x);
       const o = { name: c.name, engine: c.engine, engineName: c.engineName || (ctx.engines || [])[c.engine] || "",
         params: c.p, pattern: c.pattern, tags: c.tags, created: c.created, modified: c.modified };
+      if (c.xpatch) o.xpatch = c.xpatch.slice();
+      if (c.source) o.source = c.source;
       if (Number.isInteger(x.slot)) o.slot = x.slot;
       return o;
     }),
@@ -1131,7 +1279,7 @@ function readLibraryFile(obj, ctx) {
     const e = engIndex(obj.engineName, obj.engine);
     if (e < 0) return { patches: [], skipped: 1, keys: null };
     return { patches: [cleanPatch({ name: obj.presetName || obj.engineName || "PATCH", engine: e, engineName: obj.engineName,
-      p: obj.p.slice(0, ctx.keys ? ctx.keys.length : obj.p.length), pattern: Array.isArray(obj.steps) ? patternFromSteps(obj.steps) : null, tags: ["file"] })],
+      xpatch: obj.xpatch, source: obj.source, p: obj.p.slice(0, ctx.keys ? ctx.keys.length : obj.p.length), pattern: Array.isArray(obj.steps) ? patternFromSteps(obj.steps) : null, tags: ["file"] })],
       skipped: 0, keys: null };
   }
   if (obj.format !== LIB.FORMAT) throw new Error("unknown format");
@@ -1174,9 +1322,11 @@ const bank = {
 /* the current sound: DUMP + the first 16 steps */
 async function capturePatch(rq, info, name) {
   const dump = parse[CMD.DUMP](await rq(req.dump()), info);
+  const xp = info.proto >= 6 && info.engines[dump.engine] === "DX7"
+    ? parse[CMD.XPATCH](await rq(req.xpatch())).xpatch : null;
   const steps = [];
   for (let i = 0; i < UP.PAT && i < info.nstep; i++) steps.push(parse[CMD.STEP_GET](await rq(req.stepGet(i))));
-  return { patch: cleanPatch({ name, engine: dump.engine, engineName: info.engines[dump.engine], p: dump.p, pattern: patternFromSteps(steps) }), dump, steps };
+  return { patch: cleanPatch({ name, engine: dump.engine, engineName: info.engines[dump.engine], xpatch: xp, p: dump.p, pattern: patternFromSteps(steps) }), dump, steps };
 }
 
 /* what loading a sound leaves alone (firmware ui.c param_kept): the mix (LEVEL, PAN, MUTE), the pattern
@@ -1186,7 +1336,9 @@ const keptIds = (info) => new Set([0, 25, 26, 27, 29, 30, 31, 32, 39, 40, ...(in
    then every parameter of the sound that differs. Never the pattern (LIVE: a sound never changes the
    sequence), the mix or the key. opt: {gEng: G_ENGSEL id, progress(i, n)} -> {wrote: false} */
 async function auditionPatch(rq, info, pt, opt = {}) {
+  if (pt.xpatch && !(info.proto >= 6)) throw new Error("DX7 导入需要 ALG03 固件 / DX7 requires ALG03 firmware");
   await rq(req.set(1, opt.gEng ?? 20, pt.engine));
+  if (pt.xpatch) parse[CMD.XPATCH](await rq(req.xpatch(pt.xpatch)));
   const dump = parse[CMD.DUMP](await rq(req.dump()), info);
   const n = Math.min(info.pcount, pt.p.length), kept = keptIds(info);
   for (let i = 0; i < n; i++) {
@@ -3583,13 +3735,16 @@ setInterval(async () => {
 }, 400);
 
 /* ------------------------------------------------------------ files --- */
-$("savefile").addEventListener("click", () => {
+$("savefile").addEventListener("click", async () => {
   if (!dev) return;
   const engine = dev.dump.engine, preset = dev.dump.preset;
   const data = { format: "felucca-patch", version: 1, firmware: dev.info.version,
     engineName: dev.info.engines[engine], presetName: (dev.names[engine] || [])[preset],
     engine, preset, p: dev.dump.p.slice(), g: dev.dump.g.slice(),
     steps: dev.steps.map((s) => ({ n: s.n, notes: s.notes.slice(), time: s.time, flags: s.flags, vel: s.vel })) };
+  try {
+    if (data.engineName === "DX7") data.xpatch = parse[CMD.XPATCH](await rqf(req.xpatch())).xpatch;
+  } catch (e) { sayK("badfile", e.message); return; }
   download(`felucca-${fileSlug(data.engineName || "patch")}-${fileSlug(data.presetName || preset)}.json`, data);
 });
 $("loadfile").addEventListener("click", () => { $("file").value = ""; $("file").click(); });
@@ -3601,11 +3756,13 @@ $("file").addEventListener("change", async () => {
     data = JSON.parse(await f.text());
     if (!Number.isInteger(data.engine) || !Number.isInteger(data.preset) || !Array.isArray(data.p)) throw new Error("engine / preset / p");
     if (data.engine < 0 || data.engine >= dev.info.nengines) throw new Error("engine " + data.engine);
+    if (data.xpatch) { checkXPatch(data.xpatch); if (!(dev.info.proto >= 6) || dev.info.engines[data.engine] !== "DX7") throw new Error("DX7 requires ALG03 firmware"); }
   } catch (e) { sayK("badfile", e.message); return; }
   busy++;
   try {
     selfLoad();
     await rq(req.preset(data.engine, data.preset));
+    if (data.xpatch) parse[CMD.XPATCH](await rq(req.xpatch(data.xpatch)));
     dev.dump = await getDump();
     await rereadEngineDesc();
     const n = Math.min(data.p.length, dev.info.pcount);
@@ -3982,6 +4139,7 @@ $("libimport").addEventListener("click", () => { $("libfile").value = ""; $("lib
 async function importLibraryObject(obj) {
   const ctx = libCtx();
   const r = readLibraryFile(obj, ctx);
+  r.skipped += Number.isInteger(obj.sourceSkipped) ? obj.sourceSkipped : 0;
   if (!ctx.keys && r.keys) {
     libMeta = { keys: r.keys, engines: Array.isArray(obj.engines) ? obj.engines : null, pe0: obj.pE0 ?? null };
     try { await store.setMeta("layout", libMeta); } catch (e) { console.warn(e); }
@@ -3994,11 +4152,62 @@ $("libfile").addEventListener("change", async () => {
   let n = 0, skipped = 0;
   for (const f of [...$("libfile").files]) {
     try {
-      const r = await importLibraryObject(JSON.parse(await f.text()));
+      if (f.size > 4 * 1024 * 1024) throw new Error("文件超过 4 MiB / File exceeds 4 MiB");
+      const r = await importLibraryObject(readExternalPresets(new Uint8Array(await f.arrayBuffer()), libCtx(), f.name));
       n += r.imported; skipped += r.skipped;
     } catch (e) { sayK("badfile", `${f.name}: ${e.message}`); return; }
   }
   sayK("imported", n + (skipped ? t("skippedN").replace("{n}", skipped) : t("patchesN")));
+});
+let dxDetail = null;
+function renderDXDetail() {
+  const root = $("dxdetail"); root.replaceChildren();
+  const field = (box, label, off, min, max, shift = null, mask = null, display = 0) => {
+    const l = document.createElement("label"), input = document.createElement("input");
+    l.textContent = label; input.type = "number"; input.min = min + display; input.max = max + display;
+    input.value = (shift == null ? dxDetail[off] : dxDetail[off] >> shift & mask) + display;
+    input.addEventListener("change", () => {
+      const n = Number(input.value) - display;
+      if (!Number.isInteger(n) || n < min || n > max) { input.value = (shift == null ? dxDetail[off] : dxDetail[off] >> shift & mask) + display; return; }
+      dxDetail[off] = shift == null ? n : (dxDetail[off] & ~(mask << shift)) | n << shift;
+    });
+    l.append(input); box.append(l);
+  };
+  const grid = parent => { const g = document.createElement("div"); g.style.cssText = "display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px;margin:8px 0"; parent.append(g); return g; };
+  for (let op = 1; op <= 6; op++) {
+    const details = document.createElement("details"), title = document.createElement("summary");
+    title.textContent = `OP${op} · 音量 / 频率 / 包络`; details.append(title); root.append(details);
+    const g = grid(details), base = (6 - op) * 17;
+    field(g, "Level", base + 14, 0, 99); field(g, "Ratio(0)/Fixed(1)", base + 15, 0, 1, 0, 1);
+    field(g, "Coarse", base + 15, 0, 31, 1, 31); field(g, "Fine", base + 16, 0, 99); field(g, "Detune", base + 12, 0, 14, 3, 15);
+    for (let i = 0; i < 4; i++) { field(g, `Rate ${i + 1}`, base + i, 0, 99); field(g, `Level ${i + 1}`, base + 4 + i, 0, 99); }
+    field(g, "Key breakpoint", base + 8, 0, 99); field(g, "Left depth", base + 9, 0, 99); field(g, "Right depth", base + 10, 0, 99);
+    field(g, "Left curve", base + 11, 0, 3, 0, 3); field(g, "Right curve", base + 11, 0, 3, 2, 3);
+    field(g, "Rate scaling", base + 12, 0, 7, 0, 7); field(g, "AM sensitivity", base + 13, 0, 3, 0, 3); field(g, "Velocity", base + 13, 0, 7, 2, 7);
+  }
+  const globals = grid(root);
+  field(globals, "Algorithm", 110, 0, 31, 0, 31, 1); field(globals, "Feedback", 111, 0, 7, 0, 7);
+  field(globals, "Osc sync", 111, 0, 1, 3, 1); field(globals, "Transpose (24=0)", 117, 0, 48);
+  for (let i = 0; i < 4; i++) { field(globals, `Pitch rate ${i + 1}`, 102 + i, 0, 99); field(globals, `Pitch level ${i + 1}`, 106 + i, 0, 99); }
+  field(globals, "LFO speed", 112, 0, 99); field(globals, "LFO delay", 113, 0, 99); field(globals, "Pitch depth", 114, 0, 99); field(globals, "AM depth", 115, 0, 99);
+  field(globals, "LFO sync", 116, 0, 1, 0, 1); field(globals, "LFO wave (0–5)", 116, 0, 5, 1, 7); field(globals, "PM sensitivity", 116, 0, 7, 4, 7);
+}
+$("dxread").addEventListener("click", () => {
+  if (!dev || dev.info.engines[dev.dump.engine] !== "DX7" || !(dev.info.proto >= 6)) { sayK("badfile", "请先选择 DX7 引擎 / Select DX7 first"); return; }
+  libOp(async () => { dxDetail = parse[CMD.XPATCH](await rqf(req.xpatch())).xpatch; renderDXDetail(); });
+});
+$("dxapply").addEventListener("click", () => {
+  if (!dev || !dxDetail || dev.info.engines[dev.dump.engine] !== "DX7") return;
+  libOp(async () => {
+    parse[CMD.XPATCH](await rqf(req.xpatch(dxDetail)));
+    await afterSoundChange();
+    sayK("loadedUser", "DX7 参数已试听；Quick replace 保存 / Auditioned; Quick replace to save");
+  });
+});
+
+$("presetsourceuse").addEventListener("click", () => {
+  const url = $("presetsource").value;
+  if (url) $("preseturl").value = new URL(url, location.href).href;
 });
 $("preseturlimport").addEventListener("click", async () => {
   const button = $("preseturlimport");
@@ -4008,7 +4217,7 @@ $("preseturlimport").addEventListener("click", async () => {
   const timer = setTimeout(() => controller.abort(), 20000);
   try {
     const url = new URL($("preseturl").value.trim());
-    if (url.protocol !== "https:" || url.username || url.password) throw new Error("请输入 HTTPS JSON 直链 / Use an HTTPS JSON URL");
+    if (url.protocol !== "https:" || url.username || url.password) throw new Error("请输入 HTTPS JSON / SYX 直链 / Use an HTTPS JSON / SYX URL");
     const response = await fetch(url.href, { credentials: "omit", signal: controller.signal });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const reader = response.body.getReader(), chunks = [];
@@ -4017,15 +4226,15 @@ $("preseturlimport").addEventListener("click", async () => {
       const { value, done } = await reader.read();
       if (done) break;
       size += value.byteLength;
-      if (size > 4 * 1024 * 1024) { await reader.cancel(); throw new Error("JSON 文件超过 4 MiB / JSON exceeds 4 MiB"); }
+      if (size > 4 * 1024 * 1024) { await reader.cancel(); throw new Error("预设文件超过 4 MiB / Preset file exceeds 4 MiB"); }
       chunks.push(value);
     }
     const bytes = new Uint8Array(size);
     let offset = 0;
     for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
-    const r = await importLibraryObject(JSON.parse(new TextDecoder().decode(bytes)));
+    const r = await importLibraryObject(readExternalPresets(bytes, libCtx(), url.href));
     sayK("imported", r.imported + (r.skipped ? t("skippedN").replace("{n}", r.skipped) : t("patchesN")));
-  } catch (e) { sayK("badfile", `${e.message} · 可下载 JSON 后用 Import / Download JSON, then Import`); }
+  } catch (e) { sayK("badfile", `${e.message} · 可下载文件后用 Import / Download the file, then Import`); }
   finally { clearTimeout(timer); button.disabled = false; }
 });
 

@@ -1,34 +1,35 @@
-# SLOOP ALG-02
+# SLOOP ALG-03
 
-### 为 M-VAVE FM-1 增加拨弦与频谱加法合成的四轨 groovebox 固件
+### 带 DX7、VA 和多种 Karplus–Strong 引擎的 FM-1 四轨 groovebox 固件
 
-适用于 **M-VAVE FM-1** 的 SLOOP 自定义固件，基于 SLOOP 2.2 增加拨弦与加法合成引擎，并提供 GitHub Pages 网页安装器和音色编辑器。
+适用于 **M-VAVE FM-1** 的 SLOOP 自定义固件，基于 SLOOP 2.2，扩展拨弦、加法、六算子 DX7、VA 与多种 KS 引擎，并提供 GitHub Pages 网页安装器和音色编辑器。
 
-- 固件界面：`SLOOP ALG02 BANK TEST`；设备标识：`FM-1_982`。
-- 三条合成音轨 + 一条鼓轨，11 种合成引擎、80 个工厂音色、37 套鼓组。
+- 固件界面：`SLOOP ALG03 TEST`；设备标识：`FM-1_983`。
+- 三条合成音轨 + 一条鼓轨，16 种合成引擎、91 个工厂音色、37 套鼓组。
 - 新增 **PLUCK** 拨弦引擎和 **ADDIT** 加法合成引擎，各含 6 个预设。
 - 支持音序、实时叠录、歌曲段落、用户采样、现场效果，以及 32 个设备用户音色槽。
 
 这是独立修改的实验版本，并非 SLOOP 原作者发布的版本。本文对应随包提供的固件及编辑器；使用其他版本时，参数和保存格式可能不同。
 
-## 本轮测试版：界面与音色管理
+## ALG03 测试版新增功能
 
-本轮保持 **11 个引擎、80 个工厂音色**，不新增 DX7、VA 或 Karplus–Strong 模型。更新内容：
+- **DX7**：六算子、32 种连接算法；网页导入标准 Yamaha 单音色和 32 音色库 `.syx`，展开后逐个试听 / 替换。设备每条 DX7 音轨最多 2 音复音，完整外部库留在浏览器端。
+- **VA**：SAW / SQR / TRI / SIN / SYNC，五振荡器叠加、失谐、LP12 / LP24 / BP / HP、共振与驱动；每轨最多 4 音。
+- **KSDRUM、KSWIRE、KSCOMB**：独立引擎分类，分别采用随机反相反馈、刚性弦色散、第二梳状反馈分支；每轨最多 4 音。与 PLUCK 共用固定延迟线，节省内存。
+- **外部预设来源**：网页提供本项目的 16 个引擎分类 JSON 和 DX7 ROM 库直链选择；完整来源与格式说明见 [PRESET_SOURCES.md](docs/PRESET_SOURCES.md)。
+- 保留上一版的设备引擎分类、网页单槽替换、个人开机页与 About。
 
-- Sound 页新增用户音色槽快捷保存 / 替换。
-- 设备 PRESETS 浏览页新增 ALL / 引擎 / USER 分类。
-- Library 支持从外部 HTTPS JSON 直链导入预设。
-- coreshaw 专属开机页及 About，显示项目地址并保留上游致谢。
+**已支持的参数音色格式是 SLOOP / Felucca JSON、标准 DX7 SYX，以及 FM-1+VA 备份中的 FM 部分。** Caskexe/DX 主要提供 `.sf2` / Arturia `.dx7x`，不属于 DX7 参数文件；Baud Girl 的 VA 专用 SYX、OB-Xf FXP 和 Surge 音色尚未支持转换。WAV 等音频从 Samples 页导入。
 
-**DX7 `.syx` 单音色与 32 音色库仍不能导入或演奏。** 六运算子核心、新 VA 与更多 KS 类型属于后续阶段，等待本轮真机测试后再加入。外部预设链接必须返回本编辑器支持的 JSON，并非任何合成器的预设都能直接转换。
+### 安装前与测试顺序
 
-### 建议先测试这五项
+1. 用原版编辑器导出用户音色库 / 设备银行 JSON，并备份工程；保留上一版固件。
+2. 更新后先检查一个旧用户槽、旧工程的轨道和音序，再试听新增引擎。
+3. 用本版本编辑器导入 DX7 SYX，试听一个音色，写入空槽；然后换另一个音色覆盖同一槽。
+4. 重启后重新加载该槽，检查 DX7 参数；再测试项目保存和切换。
+5. 测试 VA 与三种独立 KS 分类，同时播放鼓轨和其他音轨，检查声音与操作响应。
 
-1. 重启，检查开机页的 coreshaw 署名与项目地址。
-2. 长按 HOME → 用 PRESETS 选 ABOUT → OCT+ 进入；OCT− 返回。
-3. 进入 SAVE 的 PRESETS 浏览页，用 KNOB 2 切换引擎分类，用 KNOB 1 / PRESETS 浏览该类音色。
-4. 在网页修改一个音色，保存到空用户槽，再修改并替换同一槽；重启后加载检查。
-5. 导出音色 JSON，重新导入浏览器库并试听；有兼容 JSON 直链时测试 URL 导入。
+ALG03 自动读取并转换 ALG02 的用户银行和 FUN4 工程。新银行记录为 v2，工程为 FUN5，保存后旧 ALG02 固件不能读取这些新格式；回退时应从安装前的备份恢复。更换固件并不等于把现有用户槽重新增加一份。
 
 ## 项目来源
 
@@ -36,18 +37,18 @@
 
 SLOOP 本身源自 **[Felucca](https://github.com/hugelton/Felucca)**，由 Leo Kuroshita（[@kurogedelic](https://github.com/kurogedelic)）/ [Hügelton Instruments](https://hugelton.com/) 开发。原有合成引擎、音序器、编辑器与安装器的基础来自这些上游项目。
 
-ALG-02 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloop-fm1/tree/f2b44c219b8a4ac00bc06dca756cdae8a259dd1a)。上游后续更新不会自动包含在这个固件中。
+ALG-03 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloop-fm1/tree/f2b44c219b8a4ac00bc06dca756cdae8a259dd1a)。上游后续更新不会自动包含在这个固件中。
 
-## ALG-02 新增了什么
+## ALG-03 新增了什么
 
-| 项目 | SLOOP 2.2 基线 | ALG-02 |
+| 项目 | SLOOP 2.2 基线 | ALG-03 |
 | --- | --- | --- |
-| 合成引擎 | 9 种 | **11 种**，新增 PLUCK、ADDIT |
-| 工厂音色 | 68 个 | **80 个**，新增 12 个 |
+| 合成引擎 | 9 种 | **16 种**，新增 PLUCK、ADDIT、DX7、VA、KSDRUM、KSWIRE、KSCOMB |
+| 工厂音色 | 68 个 | **91 个**，共新增 23 个 |
 | 合成音轨 / 鼓轨 | 3 + 1 | 3 + 1 |
 | 鼓组 | 37 套 | 37 套，沿用上游 |
 | 用户音色槽 | 32 个 | 32 个，沿用上游 |
-| 网页安装 | 上游固件安装器 | 随包附带 ALG-02 固件，并校验 SHA-256 |
+| 网页安装 | 上游固件安装器 | 随包附带 ALG-03 固件，并校验 SHA-256 |
 | 网页编辑 | 上游编辑器 | 支持新增引擎参数与预设 |
 
 - **PLUCK**：分数延迟 Karplus–Strong 拨弦物理建模，可调整激励、阻尼、拨弦位置与支撑音。新增 NYLON、STEEL、HARP、MUTED、WIRE、BASS。
@@ -74,13 +75,13 @@ ALG-02 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloo
 
 ## 链接导航
 
-### ALG-02 自定义版
+### ALG-03 自定义版
 
-项目仓库：[shaw-core/Sloop_ALG02](https://github.com/shaw-core/Sloop_ALG02)。以下为本版本的实际部署地址。
+项目仓库：[shaw-core/Sloop_ALG02](https://github.com/shaw-core/Sloop_ALG02)。以下为项目的部署地址。需要上传本测试包后，线上页面才会更新为 ALG03。
 
-- [ALG-02 网页安装器](https://shaw-core.github.io/Sloop_ALG02/)
-- [ALG-02 网页音色编辑器](https://shaw-core.github.io/Sloop_ALG02/webapp/editor/)
-- [下载随仓库附带的固件](firmware/sloop-ALG02-BANK-TEST.fwsc)
+- [ALG-03 网页安装器](https://shaw-core.github.io/Sloop_ALG02/webapp/installer/)
+- [ALG-03 网页音色编辑器](https://shaw-core.github.io/Sloop_ALG02/webapp/editor/#sound)
+- [下载随仓库附带的固件](firmware/sloop-ALG03-TEST.fwsc)
 - [下载对应版本源码](source.zip)
 
 上面两条文件链接对应交付包的目录结构。源码保留为 ZIP 即可，不影响网页安装与编辑。
@@ -97,7 +98,7 @@ ALG-02 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloo
 - [Felucca 源码仓库](https://github.com/hugelton/Felucca)
 - [FM-1-transporter 恢复工具项目](https://github.com/kurogedelic/FM-1-transporter)
 
-**上游安装器安装的是原版 SLOOP，不包含 ALG-02 的 PLUCK / ADDIT。使用新增引擎请打开自己部署的 ALG-02 页面。** 编辑新增音色也建议使用随包提供的编辑器。上游手册用于参考共同功能，新增引擎请以本 README 为准。
+**上游安装器安装的是原版 SLOOP，不包含 ALG-03 的 PLUCK / ADDIT。使用新增引擎请打开自己部署的 ALG-03 页面。** 编辑新增音色也建议使用随包提供的编辑器。上游手册用于参考共同功能，新增引擎请以本 README 为准。
 
 ## 1. 网页地址与安装
 
@@ -119,7 +120,7 @@ ALG-02 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloo
 1. 先导出需要保留的音色、工程和采样，并保留官方固件与恢复工具。
 2. 使用电脑上的 Chrome 或 Edge，通过 USB **数据线**连接 FM-1。
 3. 关闭 M-UPGRADE、DAW 及其他正在连接 FM-1 的 MIDI 网页。
-4. 打开网站安装首页，确认显示的是 `FM-1_982 / SLOOP ALG02 TEST`。
+4. 打开网站安装首页，确认显示的是 `FM-1_983 / SLOOP ALG03 TEST`。
 5. 点击 **INSTALL**，允许 MIDI / SysEx 权限，等待页面提示完成并让设备重启。
 
 安装过程中保持供电，不要拔线、关闭页面或让电脑休眠。使用部署后的 HTTPS 页面，不要直接双击本地 HTML 文件安装。
@@ -257,6 +258,46 @@ PICK 和 SEED 的变化主要在下一次音符触发时体现。BODY 使用 ADS
 
 新增引擎每条合成音轨最多 4 声部，三条合成音轨共享 8 声部预算。多轨同时演奏大和弦时，较早的声音可能被替换。
 
+### DX7：导入、详细编辑与替换
+
+1. 连接安装 ALG03 的 FM-1，在 Sound 页按 Import，选择 `.syx` 文件。整个音色库拆为独立条目，保存在浏览器 Library，不会自动改写设备。
+2. Library 的引擎筛选选 **DX7**；输入名称搜索，比如 `E.PIANO`。选中条目按 Audition。
+3. 常规参数页可改 ALG（1–32）、FB（0–7）、BRIGHT 和 OPS（0–63 位掩码，默认全部算子开启）。
+4. 展开 **DX7 六算子详细编辑**，按 Read 读取当前音色。OP1–OP6 每个面板可修改电平、频率模式 / 粗调 / 微调 / 失谐、四段包络、键盘缩放、力度与 AM 灵敏度。下方可修改音高包络、移调和 LFO。
+5. 修改后按 Apply 试听。此时只改变当前轨道；按 Quick replace / 快速替换选择 U01–U32，保存到设备。覆盖已用槽时确认。也可将 Library 中的音色直接 To slot。
+6. 切换到别的 DX7 音色或轨道后，先再次 Read，再进行详细编辑。未按 Apply 的详细参数还没有发送到设备。
+7. 按 Save to library / 保存当前音色到网页库，再 Export，可保留新的 128 字节 DX7 参数。Save to file 也会携带这些参数。保存项目会保留各合成轨的 DX7 数据。
+
+Ratio 模式粗调 0 表示 0.5 倍频；Fixed 模式使用固定频率。Detune 的 7 为中性；Transpose 的 24 为不移调。LFO wave 0–5 依次为 TRI、下降锯齿、上升锯齿、SQR、SIN、S&H；Key curve 0–3 为 −LIN、−EXP、+EXP、+LIN。
+
+DX7 的响度包络与释放由每个算子的包络决定；通用 ENV 页的 ADSR 不会替代算子包络。
+
+这是 DX7 格式兼容引擎，键盘 / 力度缩放、部分调制深度和极高频处理存在近似，不保证与原机 / Dexed 逐样本相同。移植来源和限制见 [DX7_PROVENANCE.md](docs/DX7_PROVENANCE.md)。
+
+### VA：叠加振荡器和同步
+
+| 参数 | 用途 |
+| --- | --- |
+| WAVE | SAW、SQR、TRI、SIN、SYNC |
+| SHAPE | SQR 脉宽；SYNC 从振荡器频率比 |
+| DETUNE | 控制五振荡器之间的失谐，单位 ct |
+| SUPER | 中心振荡器与五振荡器叠加的混合 |
+| FILTER | LP12、LP24、BP、HP |
+| CUTOFF / RES | 滤波截止频率与共振 |
+| DRIVE | 进入滤波器前的软削波 |
+
+预设：SUPER SAW、SYNC LEAD、VA PAD。SAW / SQR 采用带限振荡器；SYNC 的重置与 TRI 高音仍可能产生混叠。VA 是独立实现，不是 Baud Girl VA 的移植，暂不读取其专用预设。
+
+### PLUCK 以外的三种独立 Karplus–Strong 引擎
+
+| 分类 | 实际算法变化 | 主要控制 | 工厂音色 |
+| --- | --- | --- | --- |
+| KSDRUM | 延迟线循环中随机反相，产生鼓击 / 非谐波衰减 | NOISE 反相概率、DECAY、DAMP | KS DRUM、DRY TOM |
+| KSWIRE | 一阶全通色散分支，补偿低频群延迟 | STIFF 刚度、DECAY、DAMP | STIFF WIRE、DISP BELL |
+| KSCOMB | 半周期附近的第二反馈抽头与主反馈混合 | COMB 混合、DECAY、DAMP | COMB BELL、HOLLOW KS |
+
+三类都有 BODY、DRIVE、TONE 和 SEED，且有独立网页 / 设备引擎分类。先加载预设再修改。色散与额外抽头会改变泛音与音高感；KSDRUM 是 KS 随机反馈鼓音近似，不是二维鼓膜物理仿真。PLUCK 保留 NOISE / PICK / SOFT 和原来的 6 个预设。
+
 ## 5. 音色到底保存在哪里
 
 | 保存位置 | 操作入口 | 保存后有什么效果 |
@@ -280,7 +321,7 @@ PICK 和 SEED 的变化主要在下一次音符触发时体现。BODY 使用 ADS
 
 一次只写选中的槽，不批量覆盖。设备名称为最多 12 个可打印 ASCII 字符，建议使用英文、数字或空格；中文名称请保留在浏览器库中。保存成功后数据已经写入设备用户库，无需另外按本机 SAVE。
 
-这是替换用户槽，不是改写固件内的 80 个工厂预设。请先把工厂音色加载到当前音轨，再保存为自己的用户音色。
+这是替换用户槽，不是改写固件内的 91 个工厂预设。请先把工厂音色加载到当前音轨，再保存为自己的用户音色。
 
 ### 直接保存当前音色
 
@@ -318,7 +359,7 @@ PICK 和 SEED 的变化主要在下一次音符触发时体现。BODY 使用 ADS
 
 导入浏览器库不等于已经存入 FM-1。想把文件中的音色永久存到设备，请完成用户槽写入步骤。
 
-文件名或 JSON 内部出现 `felucca` 是沿用上游编辑器格式，并不表示安装了另一套固件。优先在同一版本固件之间交换音色。SLOOP 的 DIGITAL 为四运算子 FM，不能直接导入 Baud Girl / DX7 六运算子的音色文件；普通音频 WAV 也不是音色 JSON，应到 Samples 页上传。
+文件名或 JSON 内部出现 `felucca` 是沿用上游编辑器格式，并不表示安装了另一套固件。优先在同一版本固件之间交换音色。DIGITAL 是原有四算子 FM；六算子音色导入新的 DX7 引擎。Baud Girl VA 专用文件尚未转换。普通音频 WAV 不是音色 JSON，应到 Samples 页上传。
 
 ### 从外部网页导入预设
 
@@ -337,7 +378,9 @@ https://raw.githubusercontent.com/用户名/仓库名/main/presets/音色.json
 
 如果对方网站没有允许跨站读取（CORS）、需要登录或链接失效，网页会提示失败。先用浏览器下载 JSON，再通过 Library → Import 导入即可。导入只加入浏览器库，不会自行覆盖设备音色。
 
-**DX7 网站常见的 `.syx` 文件暂不支持。** 这类文件将在后续六运算子引擎完成后接入，不能改扩展名为 `.json` 来导入。
+FM-1+VA 的 `Save a backup` 文件也可从 Import 读取：提取其中的 FM 音色，VA / 未知类型跳过并显示数量。此转换只保留 FM 音色参数，不搬迁原版的效果设置或音序；纯 VA 文件会提示不支持。
+
+**DX7 `.syx` 已支持。** 可使用 [Yamaha Black Boxes](https://yamahablackboxes.com/collection/yamaha-dx7-synthesizer/patches/) 下载的标准单音色 / 32 音色库。Import 选择文件，或粘贴 HTTPS 文件直链。无需改扩展名；ZIP 需先解压，SF2 / DX7X 不支持直接转换。
 
 ## 8. 音序、工程与采样
 
@@ -391,7 +434,7 @@ FX 的白键 1–16：LOOP 1/4、LOOP 1/8、LOOP 1/16、LOOP 1/32、STUTTER、RE
 
 ## 10. 将网站放到 GitHub Pages
 
-1. 解压交付的 `SLOOP_ALG02_Bank_UI_GitHub_Pages.zip`。
+1. 解压交付的 `SLOOP_ALG03_GitHub_Pages.zip`。
 2. 将里面 **github-pages 文件夹的内容**上传到仓库根目录；根目录应有 `index.html`、`webapp/`、`firmware/`、`source.zip` 和 `.nojekyll`。
 3. 将本文件作为根目录的 `README.md` 上传。
 4. 在仓库 **Settings → Pages → Build and deployment** 选择 **Deploy from a branch**，选择 `main` 和 `/(root)`，点击 Save。
@@ -403,11 +446,18 @@ FX 的白键 1–16：LOOP 1/4、LOOP 1/8、LOOP 1/16、LOOP 1/32、STUTTER、RE
 
 ## 致谢与许可
 
-感谢 SLOOP 与 Felucca 的作者和贡献者。ALG-02 的主要新增工作是 PLUCK / ADDIT 引擎、12 个预设、对应网页支持及可部署的固件安装包；四轨系统、鼓机、录音、歌曲、基础编辑器与更新协议来自上游。
+感谢 SLOOP 与 Felucca 的作者和贡献者。ALG-03 的主要新增工作是七种扩展引擎、23 个新增预设、DX7 / JSON 外部导入、详细编辑、槽位替换、分类与个人页面，以及可部署的安装包；四轨系统、鼓机、录音、歌曲、基础编辑器与更新协议来自上游。
 
+- DX7 路由、包络、音高包络和 LFO 参考 Google Music Synthesizer for Android（Apache-2.0），保留 [Apache-2.0 许可证](docs/Apache-2.0.txt) 和来源署名。
 - 应用源码：**GPL-3.0-only**。上游 [LICENSE](https://github.com/isod89/sloop-fm1/blob/main/LICENSE) 与 [LICENSING.md](https://github.com/isod89/sloop-fm1/blob/main/LICENSING.md) 可供参考；本修改版的具体文件许可见 `source.zip` 内说明。分发修改版时应保留版权、许可证并提供对应源码。
 - 上游采样来自 Versilian Studios VSCO-2 CE / VCSL、Sonic Pi 等 CC0 素材；字体、SDK 等保留各自许可证。
 - 上游 PHASE 引擎参考 CrispyZebra，VOICE 引擎参考 klattsch。相关作者与许可说明保留在源码中。
 - 本交付版本未分发上游保留权利的设备图标图集，因此部分设备界面以文字显示；上游截图仅可作为共同功能参考。
 - M-VAVE 与 FM-1 商标归其所有者；本项目不隶属于 M-VAVE，也不代表上游作者发布的官方版本。
 - 本版本使用 USB MIDI，未移植官方固件的蓝牙或 USB Audio 功能。
+
+## 开发与验证
+
+源码包内执行 `build.sh` 编译；需要 Jieli 工具链，并设置 `JIELI_TOOLCHAIN` 与 `AC79_SDK`。执行 `tests/run_tests.sh` 做回归；`tools/export_factory_library.py` 从真实固件的预设加载过程生成 16 个引擎分类 JSON；`web/make_site.py` 生成 Pages 目录。
+
+电脑测试包含旧银行 / 工程迁移、原有 109 个声音渲染保持、新增引擎渲染、128 个 MIDI 音高、DX7 的 32 算法、VA 的 5 波形与 4 滤波模式、外部文件校验、详细数据导出 / 写入和单槽覆盖。目标代码做 RAM / pool 容量及静态指令成本检查；本环境无法测量实际 MCU 最坏 CPU 负载或 USB / 音频硬件行为，仍需真机测试。

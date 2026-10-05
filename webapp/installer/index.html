@@ -68,10 +68,10 @@
   <div class="strip"><i></i><i></i><i></i><i></i></div>
   
   <h1>SLOOP ALG‑02 实验固件</h1>
-  <p class="lead">版本：FM-1_982 / SLOOP ALG02 TEST。新增 PLUCK 拨弦和 ADDIT 加法合成，共 11 种引擎、80 个工厂音色。已通过电脑测试，尚未实机验证。先备份音色和工程；安装后将替换现有固件。请使用电脑上的 Chrome 或 Edge、USB 数据线，安装期间保持网页打开与供电。</p>
-  <p class="lead">A groovebox you play live: four tracks — three synths and a drum machine — 11 synth engines, 80 sounds, 37 drum kits from 808 to techno, afro and ambient, your own samples, 16 punch-in effects. House, techno, hip-hop, drum &amp; bass, synthwave, lo-fi, ambient: make what you want. No factory patterns, nothing to load: everything you hear, you play.</p>
+  <p class="lead">版本：FM-1_983 / SLOOP ALG03 TEST。新增 DX7、VA、KSDRUM、KSWIRE 和 KSCOMB，共 16 种引擎、91 个工厂音色。已通过电脑测试，尚未实机验证。先备份音色和工程；安装后将替换现有固件。请使用电脑上的 Chrome 或 Edge、USB 数据线，安装期间保持网页打开与供电。</p>
+  <p class="lead">A groovebox you play live: four tracks — three synths and a drum machine — 16 synth engines, 91 sounds, 37 drum kits from 808 to techno, afro and ambient, your own samples, 16 punch-in effects. House, techno, hip-hop, drum &amp; bass, synthwave, lo-fi, ambient: make what you want. No factory patterns, nothing to load: everything you hear, you play.</p>
   <div class="tiles">
-    <div class="tile" style="--c: var(--blue)"><b>80</b><span>sounds, 11 engines, your samples</span></div>
+    <div class="tile" style="--c: var(--blue)"><b>91</b><span>sounds, 16 engines, your samples</span></div>
     <div class="tile" style="--c: var(--green)"><b>37</b><span>drum kits, 909 to afro</span></div>
     <div class="tile" style="--c: var(--yellow)"><b>16</b><span>punch-in fx: hold fx + key</span></div>
     <div class="tile" style="--c: var(--orange)"><b>rec</b><span>no click: the loop follows you</span></div>
@@ -417,7 +417,7 @@ const sayK = (k, arg = "") => { lastKey = k; lastArg = arg; $("status").textCont
 const say = (txt) => { lastKey = null; $("status").textContent = txt; };
 const log = (t) => { $("log").textContent += t + "\n"; };
 let image = null;
-const meta = {"version": "ALG02-BANK-TEST", "product": "FM-1_982", "pkg": "../../firmware/sloop-ALG02-BANK-TEST.fwsc", "sha256": "ee134ef081b2474722ff1b789cf12bcbfa63d56410ac50f85cf681ece92193fc"};
+const meta = {"version": "ALG03-TEST", "product": "FM-1_983", "pkg": "../../firmware/sloop-ALG03-TEST.fwsc", "sha256": "4dbf0680dc701da885344beb2b215635366ebd497e7ffa1ae525a85469731ca6"};
 
 let writing = false;
 window.addEventListener("beforeunload", (e) => { if (writing) { e.preventDefault(); e.returnValue = t("leave"); } });
