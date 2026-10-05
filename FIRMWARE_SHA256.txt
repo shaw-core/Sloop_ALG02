@@ -1,0 +1,1 @@
+ee134ef081b2474722ff1b789cf12bcbfa63d56410ac50f85cf681ece92193fc  firmware/sloop-ALG02-BANK-TEST.fwsc

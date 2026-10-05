@@ -417,7 +417,7 @@ const sayK = (k, arg = "") => { lastKey = k; lastArg = arg; $("status").textCont
 const say = (txt) => { lastKey = null; $("status").textContent = txt; };
 const log = (t) => { $("log").textContent += t + "\n"; };
 let image = null;
-const meta = {"version": "ALG02-TEST", "product": "FM-1_982", "pkg": "../../firmware/sloop-ALG02-TEST.fwsc", "sha256": "39a1034b0d4b17a6b2b173beea50428138376dbe192649a19a1635c0c4ee28a4"};
+const meta = {"version": "ALG02-BANK-TEST", "product": "FM-1_982", "pkg": "../../firmware/sloop-ALG02-BANK-TEST.fwsc", "sha256": "ee134ef081b2474722ff1b789cf12bcbfa63d56410ac50f85cf681ece92193fc"};
 
 let writing = false;
 window.addEventListener("beforeunload", (e) => { if (writing) { e.preventDefault(); e.returnValue = t("leave"); } });

@@ -211,6 +211,12 @@
           <input type="file" id="file" accept=".json,application/json" hidden></p>
       </div>
     </div>
+    <div class="bar" id="quicksave">
+      <label>设备用户音色槽 / Device slot <select id="quickslot"></select></label>
+      <label>名称 / Name <input id="quickname" maxlength="12" placeholder="保留原名称 / Keep name"></label>
+      <button id="quickreplace">保存 / 替换此槽 · Save / replace slot</button>
+      <span class="dim">写入当前音色；工厂预设保持不变。</span>
+    </div>
     <p class="dim" id="drumnote" data-t="drumNote" hidden></p>
     <p class="dim" id="ctlhelp" data-t="ctlHelp"></p>
     <div class="groups" id="groups"></div>
@@ -264,6 +270,11 @@
           <input type="file" id="libfile" accept=".json,application/json" multiple hidden>
           <span class="dim" id="libcount"></span>
         </p>
+        <p class="bar">
+          <input id="preseturl" type="url" placeholder="https://…/presets.json" aria-label="External preset JSON URL">
+          <button id="preseturlimport">导入预设链接 / Import URL</button>
+          <span class="dim">JSON 直链；若网站禁止跨站读取，请下载后用 Import 导入。</span>
+        </p>
       </div>
       <div>
         <h2 data-t="bank" data-ic="port_disk"></h2>
@@ -308,7 +319,7 @@
     </div>
   </section>
 
-  <footer>SLOOP, based on Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>. GPL-3.0.<br>
+  <footer>ALG-02 · Developed by coreshaw · <a href="https://github.com/shaw-core/Sloop_ALG02" target="_blank" rel="noopener">shaw-core/Sloop_ALG02</a><br>SLOOP, based on Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>. GPL-3.0.<br>
     <span data-t="foot"></span> M-VAVE and FM-1 are trademarks of their respective owners.<br>
     <a href="FUKIAI-LICENSE.txt" data-t="iconsCredit"></a></footer>
 </main>
@@ -2315,6 +2326,7 @@ function renderSysinfo() {
 }
 
 function updateBrowser() {
+  renderQuickSave();
   const e = dev.dump.engine;
   const sel = $("engine");
   const drum = e >= dev.info.nengines;              /* the drum track: no engine, no presets */
@@ -3777,7 +3789,31 @@ function renderLib() {
 }
 ["libq", "libeng", "libtag", "libsort"].forEach((id) => $(id).addEventListener(id === "libq" ? "input" : "change", renderLib));
 
+function renderQuickSave() {
+  const box = $("quicksave"), sel = $("quickslot");
+  box.hidden = !dev || !dev.bank || isDrum();
+  if (box.hidden) return;
+  const prior = sel.value;
+  sel.replaceChildren(...dev.bank.slots.map((s) => el("option", {
+    value: s.slot, text: `${slotName(s.slot)} · ${s.used ? s.name : t("empty")} · ${s.used ? dev.info.engines[s.engine] || s.engine : ""}`
+  })));
+  sel.value = prior || "0";
+  $("quickreplace").disabled = libBusy;
+}
+$("quickreplace").addEventListener("click", () => {
+  if (!dev || !dev.bank || libBusy || isDrum()) return;
+  const slot = +$("quickslot").value, s = dev.bank.slots[slot];
+  if (!s) return;
+  const name = $("quickname").value.trim() || (s.used ? s.name : "");
+  if (s.used && !confirm(t("confirmOverwrite").replace("{n}", slotName(slot)).replace("{name}", s.name))) return;
+  libOp(async () => {
+    checkRc(await bank.store(rqf, slot, name));
+    await refreshSlot(slot);
+    sayK("storedSlot", `${slotName(slot)} ${dev.bank.slots[slot].name}`);
+  });
+});
 function renderBank() {
+  renderQuickSave();
   const pane = $("bankpane");
   $("bankhint").hidden = !!(dev && dev.bank);
   $("bankhint").textContent = t(!dev || !dev.dump ? "bankConnect" : "bankNone");
@@ -3943,24 +3979,54 @@ $("libexp1").addEventListener("click", () => {
 });
 $("libexport").addEventListener("click", () => download(`felucca-library-${today()}.json`, libraryFile("library", lib, libCtx())));
 $("libimport").addEventListener("click", () => { $("libfile").value = ""; $("libfile").click(); });
+async function importLibraryObject(obj) {
+  const ctx = libCtx();
+  const r = readLibraryFile(obj, ctx);
+  if (!ctx.keys && r.keys) {
+    libMeta = { keys: r.keys, engines: Array.isArray(obj.engines) ? obj.engines : null, pe0: obj.pE0 ?? null };
+    try { await store.setMeta("layout", libMeta); } catch (e) { console.warn(e); }
+  }
+  if (obj.kind === "bank") r.patches.forEach((p) => { if (!p.tags.includes("bank")) p.tags.push("bank"); });
+  await libAdd(r.patches);
+  return { imported: r.patches.length, skipped: r.skipped };
+}
 $("libfile").addEventListener("change", async () => {
   let n = 0, skipped = 0;
   for (const f of [...$("libfile").files]) {
     try {
-      const obj = JSON.parse(await f.text());
-      const ctx = libCtx();
-      const r = readLibraryFile(obj, ctx);
-      if (!ctx.keys && r.keys) {                     /* no layout yet: the file's becomes the library's */
-        libMeta = { keys: r.keys, engines: Array.isArray(obj.engines) ? obj.engines : null, pe0: obj.pE0 ?? null };
-        try { await store.setMeta("layout", libMeta); } catch (e) { console.warn(e); }
-      }
-      if (obj.kind === "bank") r.patches.forEach((p) => { if (!p.tags.includes("bank")) p.tags.push("bank"); });
-      await libAdd(r.patches);
-      n += r.patches.length;
-      skipped += r.skipped;
+      const r = await importLibraryObject(JSON.parse(await f.text()));
+      n += r.imported; skipped += r.skipped;
     } catch (e) { sayK("badfile", `${f.name}: ${e.message}`); return; }
   }
   sayK("imported", n + (skipped ? t("skippedN").replace("{n}", skipped) : t("patchesN")));
+});
+$("preseturlimport").addEventListener("click", async () => {
+  const button = $("preseturlimport");
+  if (button.disabled) return;
+  button.disabled = true;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+  try {
+    const url = new URL($("preseturl").value.trim());
+    if (url.protocol !== "https:" || url.username || url.password) throw new Error("请输入 HTTPS JSON 直链 / Use an HTTPS JSON URL");
+    const response = await fetch(url.href, { credentials: "omit", signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const reader = response.body.getReader(), chunks = [];
+    let size = 0;
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > 4 * 1024 * 1024) { await reader.cancel(); throw new Error("JSON 文件超过 4 MiB / JSON exceeds 4 MiB"); }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+    const r = await importLibraryObject(JSON.parse(new TextDecoder().decode(bytes)));
+    sayK("imported", r.imported + (r.skipped ? t("skippedN").replace("{n}", r.skipped) : t("patchesN")));
+  } catch (e) { sayK("badfile", `${e.message} · 可下载 JSON 后用 Import / Download JSON, then Import`); }
+  finally { clearTimeout(timer); button.disabled = false; }
 });
 
 /* device bank */
