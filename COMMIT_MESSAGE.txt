@@ -1,0 +1,8 @@
+fix: restore live scope and add editable factory preset overrides
+
+- Capture volatile stereo scope samples with a stable display snapshot
+- Add persistent factory overrides using the 32 user preset slots
+- Add multi-select batch replacement, backups and optional factory bindings
+- Move the full DX7 editor to Sound and synchronize LFO and transpose macros
+- Add original electric piano, bass and bell DX7 presets
+- Migrate ALG03 banks/projects and document engine parameter limitations

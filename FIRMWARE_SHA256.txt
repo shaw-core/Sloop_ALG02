@@ -1,1 +1,1 @@
-4dbf0680dc701da885344beb2b215635366ebd497e7ffa1ae525a85469731ca6  firmware/sloop-ALG03-TEST.fwsc
+a7d0005a5a260c6931b93b4b0794f8d5a7019a6f9459444f2a2f20f5d2ee66f5  firmware/sloop-ALG04-TEST.fwsc

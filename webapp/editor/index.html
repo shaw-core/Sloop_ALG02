@@ -215,10 +215,21 @@
       <label>设备用户音色槽 / Device slot <select id="quickslot"></select></label>
       <label>名称 / Name <input id="quickname" maxlength="12" placeholder="保留原名称 / Keep name"></label>
       <button id="quickreplace">保存 / 替换此槽 · Save / replace slot</button>
-      <span class="dim">写入当前音色；工厂预设保持不变。</span>
+      <span class="dim">当前音色可修改；下面可将用户槽绑定为工厂预设替身。</span>
+    </div>
+    <div class="bar" id="factoryreplace">
+      <label>替换工厂预设 / Factory entry <select id="factorytarget"></select></label>
+      <button id="factorybind">绑定 Quick slot / Bind slot</button>
+      <button id="factoryunbind">取消此槽绑定 / Unbind slot</button>
+      <span class="dim">先保存到上方用户槽，再绑定。最多 32 个替身；取消绑定恢复原厂音色。</span>
     </div>
     <p class="dim" id="drumnote" data-t="drumNote" hidden></p>
     <p class="dim" id="ctlhelp" data-t="ctlHelp"></p>
+    <details id="dxpanel" open><summary>DX7 六算子详细编辑 / Six-operator editor</summary>
+          <p class="dim">选择 DX7 后自动读取完整参数；切换或修改宏后可点 Read 刷新。Apply 只改变当前试听音色；用 Quick replace 保存到选定槽位。Key curves: 0 −LIN, 1 −EXP, 2 +EXP, 3 +LIN. LFO: TRI, SAW↓, SAW↑, SQR, SIN, S&amp;H.</p>
+          <p class="bar"><button id="dxread">读取当前 DX7 / Read</button><button id="dxapply">应用并试听 / Apply</button></p>
+          <div id="dxdetail"></div>
+        </details>
     <div class="groups" id="groups"></div>
   </section>
 
@@ -264,6 +275,11 @@
           <button id="libexp1" data-t="exportPatch" data-ic="symbol_download"></button>
         </p>
         <p class="bar">
+          <label><input type="checkbox" id="batchfactory"> 同时替换工厂入口 / Bind factory entries</label><select id="batchfactorytarget"></select>
+          <button id="libbatch">批量替换选中音色 / Batch replace selected</button>
+          <button id="libselect">选择当前分类全部 / Select visible</button>
+          <button id="libclear">清空选择 / Clear selection</button>
+          <span id="batchstatus" class="dim"></span>
           <button id="libsave" data-t="saveToLib" data-ic="port_disk"></button>
           <button id="libimport" data-t="import" data-ic="symbol_upload"></button>
           <button id="libexport" data-t="exportLib" data-ic="symbol_download"></button>
@@ -275,11 +291,7 @@
           <button id="preseturlimport">导入预设链接 / Import URL</button>
           <span class="dim">JSON / DX7 SYX 直链；若网站禁止跨站读取，请下载后用 Import 导入。</span>
         </p>
-        <details><summary>DX7 六算子详细编辑 / Six-operator editor</summary>
-          <p class="dim">先选择或试听 DX7 音色，再读取参数。Apply 只改变当前试听音色；用 Quick replace 保存到选定槽位。Key curves: 0 −LIN, 1 −EXP, 2 +EXP, 3 +LIN. LFO: TRI, SAW↓, SAW↑, SQR, SIN, S&amp;H.</p>
-          <p class="bar"><button id="dxread">读取当前 DX7 / Read</button><button id="dxapply">应用并试听 / Apply</button></p>
-          <div id="dxdetail"></div>
-        </details>
+        
         <details><summary>外部音色来源 / Preset sources</summary>
           <p class="dim">DX7 SYX、FM-1+VA 备份中的 FM，以及 SLOOP / Felucca JSON 可导入。Baud Girl VA、SF2、DX7X、FXP 尚不支持直接转换。</p>
           <p class="bar"><select id="presetsource" aria-label="DX7 preset source">
@@ -362,7 +374,7 @@
     </div>
   </section>
 
-  <footer>ALG-03 · Developed by coreshaw · <a href="https://github.com/shaw-core/Sloop_ALG02" target="_blank" rel="noopener">shaw-core/Sloop_ALG02</a><br>SLOOP, based on Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>. GPL-3.0.<br>
+  <footer>ALG-04 · Developed by coreshaw · <a href="https://github.com/shaw-core/Sloop_ALG02" target="_blank" rel="noopener">shaw-core/Sloop_ALG02</a><br>SLOOP, based on Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>. GPL-3.0.<br>
     <span data-t="foot"></span> M-VAVE and FM-1 are trademarks of their respective owners.<br>
     <a href="FUKIAI-LICENSE.txt" data-t="iconsCredit"></a></footer>
 </main>
@@ -373,7 +385,7 @@
 const HDR = [0x7D, 0x46, 0x4C];
 const CMD = { INFO: 1, GET: 2, SET: 3, DUMP: 4, DESC: 5, STEP_GET: 6, STEP_SET: 7, PRESET: 8, PROJECT: 9, NAMES: 10,
   SMP_BEGIN: 11, SMP_WRITE: 12, SMP_END: 13, SMP_ERASE: 14, SMP_INFO: 15,
-  UP_LIST: 16, UP_GET: 17, UP_PUT: 18, UP_STORE: 19, UP_LOAD: 20, UP_ERASE: 21, XPATCH: 34,
+  UP_LIST: 16, UP_GET: 17, UP_PUT: 18, UP_STORE: 19, UP_LOAD: 20, UP_ERASE: 21, XPATCH: 34, BIND: 35,
   WATCH: 22, CHANGED: 23, RELOAD: 24, PING: 25, STEP_CHANGED: 26,
   TRACK: 27, TRACK_MIX: 28, TRACK_DUMP: 29, TRACK_STEP: 30,
   TRACK_PARAM: 31, TRACK_CHANGED: 32,
@@ -490,9 +502,10 @@ const parse = {
     const o = { slot: r.b(), used: r.b(), engine: r.b(), name: r.s(), p: [], pattern: [] };
     for (let i = 0; i < info.pcount; i++) o.p.push(r.v());
     for (let i = 0; i < UP.PAT; i++) o.pattern.push([r.b(), r.b()]);
-    if (a.length - r.i === 128) o.xpatch = a.slice(r.i);
+    if (a.length - r.i === 128 && info.engines?.[o.engine] === "DX7") o.xpatch = a.slice(r.i);
     return o;
   },
+  [CMD.BIND](a) { if (a.length !== 4) throw new Error("short binding reply"); return {slot:a[0],rc:a[1],engine:a[2],preset:a[3]}; },
   [CMD.XPATCH](a) {
     if (a.length !== 130) throw new Error("short extended patch reply");
     if (a[1]) throw new Error("设备拒绝扩展音色 / Extended patch rejected");
@@ -579,6 +592,7 @@ const req = {
   smpErase: (s) => [CMD.SMP_ERASE, [s & 0x7F]],
   smpInfo: () => [CMD.SMP_INFO, []],
   upList: (start, count) => [CMD.UP_LIST, [start & 0x7F, Math.max(1, Math.min(UP.LIST_MAX, count | 0))]],
+  bind: (slot, e, p) => [CMD.BIND, e == null ? [slot] : [slot, e, p]],
   xpatch: (x) => [CMD.XPATCH, x ? [1, ...checkXPatch(x)] : [0]],
   upGet: (s) => [CMD.UP_GET, [s & 0x7F]],
   /* patch: {engine, name, p: P_COUNT values, pattern: 16 x [note, flags]} */
@@ -1182,7 +1196,7 @@ function readDX7Sysex(bytes, ctx, source = "") {
   return { format: LIB.FORMAT, version: LIB.VERSION, kind: "library", pE0: pe0,
     engines, paramLabels: ctx.keys || [], patches: voices.map((xpatch, i) => {
       const params = Array(ctx.keys?.length || 58).fill(null);
-      params.splice(pe0, 8, (xpatch[110] & 31) + 1, xpatch[111] & 7, 64, 0, 0, 0, 0, 63);
+      params.splice(pe0, 8, (xpatch[110] & 31) + 1, xpatch[111] & 7, 64, xpatch[112], xpatch[114], xpatch[115], xpatch[117], 63);
       const name = String.fromCharCode(...xpatch.slice(118)).replace(/[^\x20-\x7e]/g, " ").trim() || `DX7 ${i + 1}`;
       return { name, engine, engineName: "DX7", params, xpatch, source, tags: ["DX7", "external"] };
     }) };
@@ -1240,7 +1254,7 @@ function cleanPatch(pt) {
     tags: Array.isArray(pt.tags) ? [...new Set(pt.tags.map((x) => String(x).trim()).filter(Boolean))] : [],
     created: pt.created || now, modified: pt.modified || pt.created || now,
   };
-  if (pt.xpatch != null) o.xpatch = checkXPatch(pt.xpatch);
+  if (pt.xpatch != null) { const x = checkXPatch(pt.xpatch); if(!o.engineName || o.engineName === "DX7")o.xpatch=x; }
   if (pt.source) o.source = String(pt.source);
   if (Number.isInteger(pt.slot)) o.slot = pt.slot;
   return o;
@@ -1342,7 +1356,8 @@ async function auditionPatch(rq, info, pt, opt = {}) {
   const dump = parse[CMD.DUMP](await rq(req.dump()), info);
   const n = Math.min(info.pcount, pt.p.length), kept = keptIds(info);
   for (let i = 0; i < n; i++) {
-    const v = pt.p[i];
+    let v = pt.p[i];
+    if(pt.xpatch && info.proto>=7 && info.engines[pt.engine]==="DX7"){const map={0:110,1:111,3:112,4:114,5:115,6:117}, j=i-info.pe0;if(map[j]!=null)v=j===0?(pt.xpatch[110]&31)+1:j===1?pt.xpatch[111]&7:pt.xpatch[map[j]];}
     if (opt.progress) opt.progress(i, n);
     if (v == null || kept.has(i) || v === dump.p[i]) continue;
     await rq(req.set(0, i, v));
@@ -2401,6 +2416,7 @@ async function load(d) {
       try { d.bank = await bank.list((r, o) => d.link.request(r, { ...o, quiet: true })); }
       catch (e) { if (e.message === "closed") throw e; d.bank = null; }
     }
+    await refreshDXDetail();
     renderLive();
     renderLib();
     renderBank();
@@ -2650,6 +2666,7 @@ async function afterSoundChange(msg = "ready") {
   await rereadEngineDesc();
   updateBrowser();
   refreshAll();
+  await refreshDXDetail();
   await loadSteps();                                /* a preset can bring a pattern */
   if (hasTracks()) await readMixer();               /* the sound names and the selected strip */
   sayK(msg);
@@ -3770,7 +3787,9 @@ $("file").addEventListener("change", async () => {
       const d = dev.pdesc[i];
       if (!visible(d) || !Number.isFinite(data.p[i])) continue;
       if (i % 8 === 0) sayK("applying", `${i}/${n}`);
-      await rq(req.set(0, i, data.p[i]));
+      let value=data.p[i];
+      if(data.xpatch && dev.info.proto>=7){const map={0:110,1:111,3:112,4:114,5:115,6:117},j=i-dev.info.pe0;if(map[j]!=null)value=j===0?(data.xpatch[110]&31)+1:j===1?data.xpatch[111]&7:data.xpatch[map[j]];}
+      await rq(req.set(0, i, value));
     }
     if (Array.isArray(data.steps)) {
       const m = Math.min(data.steps.length, dev.info.nstep);
@@ -3891,9 +3910,11 @@ function fullParams(p) {
     }
     out.push(v);
   }
+  if(p.xpatch && dev.info.proto>=7 && dev.info.engines[p.engine]==="DX7"){const e=dev.info.pe0;out[e]=(p.xpatch[110]&31)+1;out[e+1]=p.xpatch[111]&7;out[e+3]=p.xpatch[112];out[e+4]=p.xpatch[114];out[e+5]=p.xpatch[115];out[e+6]=p.xpatch[117];}
   return out;
 }
 
+const libSelected = new Set();
 function libView() {
   const q = $("libq").value.trim().toLowerCase(), fe = $("libeng").value, ft = $("libtag").value;
   const by = {
@@ -3925,7 +3946,7 @@ function renderLib() {
       el("tr", {}, el("th", { text: t("name") }), el("th", { text: t("engine") }), el("th", { text: t("tagsCol") }), el("th", { text: t("date") })));
     for (const p of v) {
       const tr = el("tr", { "data-id": p.id, class: p.id === libSel ? "sel" : null, draggable: "true", title: p.name },
-        el("td", {}, p.pattern ? icon("note_eight") : "", p.name),
+        el("td", {}, el("input", {type:"checkbox", checked:libSelected.has(p.id), onclick: ev => {ev.stopPropagation(); if(ev.target.checked)libSelected.add(p.id);else libSelected.delete(p.id); $("batchstatus").textContent=`${libSelected.size} selected`;}}), p.pattern ? icon("note_eight") : "", p.name),
         el("td", { text: p.engineName || String(p.engine) }),
         el("td", { text: p.tags.join(", ") }),
         el("td", { text: new Date(p.modified).toLocaleDateString(lang) }));
@@ -3947,6 +3968,14 @@ function renderLib() {
 ["libq", "libeng", "libtag", "libsort"].forEach((id) => $(id).addEventListener(id === "libq" ? "input" : "change", renderLib));
 
 function renderQuickSave() {
+  const ready = dev && dev.info && dev.dump;
+  $("dxpanel").hidden = !ready || dev.info.engines[dev.dump.engine] !== "DX7";
+  $("factoryreplace").hidden = !ready || dev.info.proto < 7 || isDrum();
+  if (ready && dev.names) {
+    const options = dev.names.flatMap((names,e) => names.map((name,p) => [`${e}:${p}`, `${dev.info.engines[e]} · ${name}`]));
+    fillSelect($("factorytarget"),options);fillSelect($("batchfactorytarget"),options);
+    $("batchfactory").disabled=dev.info.proto<7;
+  }
   const box = $("quicksave"), sel = $("quickslot");
   box.hidden = !dev || !dev.bank || isDrum();
   if (box.hidden) return;
@@ -4192,17 +4221,88 @@ function renderDXDetail() {
   field(globals, "LFO speed", 112, 0, 99); field(globals, "LFO delay", 113, 0, 99); field(globals, "Pitch depth", 114, 0, 99); field(globals, "AM depth", 115, 0, 99);
   field(globals, "LFO sync", 116, 0, 1, 0, 1); field(globals, "LFO wave (0–5)", 116, 0, 5, 1, 7); field(globals, "PM sensitivity", 116, 0, 7, 4, 7);
 }
+async function refreshDXDetail() {
+  dxDetail = null; $("dxdetail").replaceChildren();
+  if (!dev || dev.info.proto < 6 || dev.info.engines[dev.dump.engine] !== "DX7" || isDrum()) return;
+  dxDetail = parse[CMD.XPATCH](await rqf(req.xpatch())).xpatch;
+  renderDXDetail();
+}
 $("dxread").addEventListener("click", () => {
   if (!dev || dev.info.engines[dev.dump.engine] !== "DX7" || !(dev.info.proto >= 6)) { sayK("badfile", "请先选择 DX7 引擎 / Select DX7 first"); return; }
   libOp(async () => { dxDetail = parse[CMD.XPATCH](await rqf(req.xpatch())).xpatch; renderDXDetail(); });
 });
 $("dxapply").addEventListener("click", () => {
-  if (!dev || !dxDetail || dev.info.engines[dev.dump.engine] !== "DX7") return;
+  if (!dev || !dxDetail || dev.info.engines[dev.dump.engine] !== "DX7" || isDrum()) return;
   libOp(async () => {
     parse[CMD.XPATCH](await rqf(req.xpatch(dxDetail)));
     await afterSoundChange();
     sayK("loadedUser", "DX7 参数已试听；Quick replace 保存 / Auditioned; Quick replace to save");
   });
+});
+
+/* Preflight all patches before any writes; sequential flash operations never retry automatically. */
+async function batchReplace(rq, info, patches, start, total, onProgress = () => {}) {
+  if (!Number.isInteger(start) || start < 0 || !patches.length || start + patches.length > total) throw new Error("目标槽位不足 / Not enough destination slots");
+  for (const p of patches) {
+    if (p.engine < 0 || p.engine >= info.nengines || (p.engineName && info.engines[p.engine] !== p.engineName)) throw new Error("不兼容引擎 / Incompatible engine");
+    if (p.xpatch) { if(info.proto < 6)throw new Error("DX7 requires ALG03+"); checkXPatch(p.xpatch); }
+    if (p.p.length !== info.pcount || p.p.some(v => !Number.isInteger(v) || v < -128 || v > 127)) throw new Error("无效音色参数 / Invalid parameters");
+  }
+  const done=[];
+  for (let i=0;i<patches.length;i++) {
+    let rc;
+    try { rc=await bank.put(rq,start+i,patches[i]); }
+    catch(e) {throw new Error(`停止：${done.length} 个完成，${slotName(start+i)} 结果不确定，请重新读取 / Stopped; completed ${done.length}; failed slot uncertain: ${e.message}`); }
+    if(rc)throw new Error(`停止：${done.length} 个完成，${slotName(start+i)} 写入失败 (${rc}) / Stopped; completed ${done.length}`);
+    done.push(start+i);onProgress(done.length,patches.length,start+i);
+  }
+  return done;
+}
+$("libselect").addEventListener("click",()=>{for(const p of libView())libSelected.add(p.id);renderLib();$("batchstatus").textContent=`${libSelected.size} selected`;});
+$("libclear").addEventListener("click",()=>{libSelected.clear();renderLib();$("batchstatus").textContent="";});
+$("libbatch").addEventListener("click",()=>{
+  if(!dev || !dev.bank || libBusy)return;
+  const patches=libView().filter(p=>libSelected.has(p.id)).map(p=>({...p,p:fullParams(p)}));
+  if(!patches.length){sayK("badfile","请先选择音色 / Select patches first");return;}
+  const factory=$("batchfactory").checked && dev.info.proto>=7;
+  const [fe,fp]=$("batchfactorytarget").value.split(":").map(Number);
+  if(factory && (!Number.isInteger(fe)||fp+patches.length>dev.names[fe].length)){sayK("badfile","此引擎没有足够连续工厂入口 / Not enough factory entries");return;}
+  const raw=prompt("起始用户槽 U01–U32；按当前列表顺序连续替换 / Starting slot 1–32",String((bankSel ?? 0)+1));
+  if(raw==null)return;const start=Number(raw)-1;
+  if(!Number.isInteger(start)||start<0||start+patches.length>dev.bank.total){sayK("badfile","槽位不足，请减少选择 / Not enough slots");return;}
+  if(!confirm(`将替换 ${slotName(start)}–${slotName(start+patches.length-1)}，共 ${patches.length} 个。会先下载目标槽备份；已绑定的工厂替身也随之更新。${factory ? `还将绑定 ${dev.info.engines[fe]} 的 ${fp+1}–${fp+patches.length} 号工厂入口。` : ""}继续？ / Replace these slots?`))return;
+  libOp(async()=>{
+    if(factory) {
+      for(let k=0;k<dev.bank.total;k++) {
+        const b=parse[CMD.BIND](await rqf(req.bind(k)));
+        if(b.engine===fe && b.preset>=fp && b.preset<fp+patches.length && k!==start+b.preset-fp)
+          throw new Error(`工厂入口已绑定 ${slotName(k)}，先在 Sound 页取消该槽绑定 / Unbind existing slot first`);
+      }
+    }
+    const backup=[];
+    for(let k=start;k<start+patches.length;k++){const p=await bank.get(rqf,dev.info,k);if(p.used)backup.push({...p,slot:k,engineName:dev.info.engines[p.engine]});}
+    if(backup.length)download(`before-batch-${today()}.json`,libraryFile("bank",backup,libCtx()));
+    try {
+      await batchReplace(rqf,dev.info,patches,start,dev.bank.total,(n,total,k)=>{$("batchstatus").textContent=`${n}/${total} · ${slotName(k)}`;});
+      if(factory)for(let i=0;i<patches.length;i++){
+        checkRc(parse[CMD.BIND](await rqf(req.bind(start+i,fe,fp+i),FLASH_OPT)).rc);
+        $("batchstatus").textContent=`Bound ${i+1}/${patches.length}`;
+      }
+    }
+    finally {dev.bank=await bank.list(rqf);}
+    sayK("storedSlot",`${patches.length} patches`);
+  });
+});
+$("factorybind").addEventListener("click",()=>{
+  if(!dev||dev.info.proto<7||libBusy)return;
+  const slot=+$("quickslot").value, [engine,preset]=$("factorytarget").value.split(":").map(Number);
+  if(!dev.bank?.slots[slot]?.used){sayK("badfile","先保存到 Quick slot / Save slot first");return;}
+  if(!confirm(`用 ${slotName(slot)} 替换所选工厂预设？ / Bind selected factory entry?`))return;
+  libOp(async()=>{const r=parse[CMD.BIND](await rqf(req.bind(slot,engine,preset),FLASH_OPT));checkRc(r.rc);sayK("storedSlot",`${slotName(slot)} factory override`);});
+});
+$("factoryunbind").addEventListener("click",()=>{
+  if(!dev||dev.info.proto<7||libBusy)return;
+  libOp(async()=>{checkRc(parse[CMD.BIND](await rqf(req.bind(+$("quickslot").value,127,127),FLASH_OPT)).rc);sayK("storedSlot","原厂预设已恢复 / Factory restored");});
 });
 
 $("presetsourceuse").addEventListener("click", () => {
