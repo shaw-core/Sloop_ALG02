@@ -1,21 +1,45 @@
-# SLOOP ALG-04
+# SLOOP ALG-05
 
 ### 带 DX7、VA 和多种 Karplus–Strong 引擎的 FM-1 四轨 groovebox 固件
 
 适用于 **M-VAVE FM-1** 的 SLOOP 自定义固件，基于 SLOOP 2.2，扩展拨弦、加法、六算子 DX7、VA 与多种 KS 引擎，并提供 GitHub Pages 网页安装器和音色编辑器。
 
-- 固件界面：`SLOOP ALG04 TEST`；设备标识：`FM-1_984`。
+- 固件界面：`SLOOP ALG05 TEST`；设备标识：`FM-1_985`。
 - 三条合成音轨 + 一条鼓轨，16 种合成引擎、93 个工厂音色、37 套鼓组。
 - 新增 **PLUCK** 拨弦引擎和 **ADDIT** 加法合成引擎，各含 6 个预设。
 - 支持音序、实时叠录、歌曲段落、用户采样、现场效果，以及 32 个设备用户音色槽。
 
 这是独立修改的实验版本，并非 SLOOP 原作者发布的版本。本文对应随包提供的固件及编辑器；使用其他版本时，参数和保存格式可能不同。
 
-## ALG04 修复与操作
+## ALG05 修复与操作
 
 ### 设备实时波形
 
-HOME 屏幕显示真实输出采样，不是预设图标。ALG04 修复音频中断和界面共享波形缓冲的可见性，短暂锁定中断取得稳定快照，并从左右声道平均采样；仅右声道出声时也能显示。静音时应显示水平线，播放音符时波形变化。请在真机测试左右声道、不同引擎和切换页面；电脑测试无法证明 LCD/中断硬件上的最终表现。
+HOME 和设备 EDIT 的全部参数页现在显示实际音频输出的实时波形，包括 DX7 算子页、EDIT 1 / 2 与 VOICE 页。此前只有 HOME 接入了示波器，EDIT 使用空图形类型，所以无论怎么改参数都不显示；ALG05 接入 EDIT 的波形绘制，并每两帧刷新一次，刷新不依赖旋钮变化。
+
+按 **EDIT** 进入参数页，弹奏或运行音序，持续发声时调整参数应能看到波形变化。重复短按 EDIT 切换同组页面；不要长按，长按 EDIT 是原有音序擦除层。这里显示的是所有轨道和效果混合后的总输出，并非每个 DX7 算子的独立波形。静音时显示水平线；没有发声时改变参数不会凭空产生波形。保持左右声道平均采样和稳定缓冲快照。电脑测试覆盖真正的 EDIT 绘制路径和不操作旋钮时的持续刷新；LCD、音频中断时序和刷新速度仍需真机确认。
+
+### 在设备上逐个编辑 DX7 算子
+
+1. 先选中使用 DX7 的合成轨与音色，然后短按 **EDIT**。
+2. 第一次是 FM 宏页，第二次是 CTRL 宏页；继续短按 EDIT，进入下面的 DX 专用页。其他引擎不会显示这些页面。
+3. 每个 DX 专用页的 **旋钮 1（OP）** 都可选择 **OP1–OP6**。旋钮 2–4 修改当前算子，不会改动其他算子。同一轨的算子选择跨页保留。
+4. 边弹奏边调节。包络 Rate/Level 改动的完整效果通常需要重新触发音符试听。
+5. 修改只在当前音色中生效。保存请用设备 SAVE → USER 页选择 U01–U32、执行 SAVE（连续两次旋钮动作确认），或网页 Quick slot 的 Save / replace slot。需要从工厂入口调用时，再绑定该用户槽。工程保存也会保留六算子数据。
+
+| 页面 | 旋钮 1 | 旋钮 2 | 旋钮 3 | 旋钮 4 |
+| --- | --- | --- | --- | --- |
+| DX OSC | OP1–OP6 | OUT 输出 0–99 | COARSE 粗调 0–31 | FINE 细调 0–99 |
+| DX TUNE | OP1–OP6 | MODE：Ratio / Fixed | DETUNE：−7～+7 | ENABLE：当前算子开关 |
+| DX RATE1 | OP1–OP6 | R1 | R2 | R3 |
+| DX RATE2 | OP1–OP6 | R4 | — | — |
+| DX LEVEL1 | OP1–OP6 | L1 | L2 | L3 |
+| DX LEVEL2 | OP1–OP6 | L4 | RSCALE：包络速率缩放 | — |
+| DX SENS | OP1–OP6 | AMS：AM 灵敏度 | VEL：力度灵敏度 | BREAK：键盘断点 |
+| DX KEY | OP1–OP6 | LDEPTH：左侧深度 | RDEPTH：右侧深度 | — |
+| DX CURVE | OP1–OP6 | LCURVE：左侧曲线 | RCURVE：右侧曲线 | — |
+
+Rate / Level 的范围均为 0–99。曲线为 −LIN / −EXP / +EXP / +LIN。BREAK 使用 DX7 原始编号 0–99，对应 MIDI 17–116（0 为 A−1）；不是直接的 MIDI 音符编号。Ratio 模式下 COARSE=0 表示 0.5 倍频；Fixed 模式的粗/细调含义与倍频模式不同。ENABLE 与 CTRL 页 OPS 位掩码是同一组开关。ALGORITHM 旋钮仍用于切换音轨，SELECT 旋钮仍控制速度。
 
 ### 修改并替换任何合成器工厂音色
 
@@ -40,7 +64,7 @@ HOME 屏幕显示真实输出采样，不是预设图标。ALG04 修复音频中
 
 Sound 页选 DX7 后自动读取 **145 个标准声音字段**：每个算子的四段 Rate/Level、音量、Ratio/Fixed、Coarse/Fine、Detune、键盘左右深度/曲线/断点、速率缩放、力度与 AM 灵敏度；全局 32 算法、反馈、同步、音高包络、移调、LFO 波形/速度/延迟/PM/AM 和 PM 灵敏度。点 **Apply** 应用当前编辑，Quick replace 才保存到设备槽。切换音色会重新读取并丢弃尚未 Apply 的编辑；改设备宏后可点 Read 刷新详细值。
 
-设备八个宏现在是 ALG / FB / BRIGHT / LFO / PMD / AMD / TRANS / OPS；TRANS 24 表示不移调。设备宏与网页详细数据、导出和保存保持一致。仍未在设备面板逐项提供全部 145 个字段；详细编辑使用网页。包络、键盘/力度缩放、失谐和部分调制深度仍为近似 DSP，实现不是原版 DX7/Dexed 的逐样本复刻，复音限制仍为每轨 2 音。
+设备八个宏现在是 ALG / FB / BRIGHT / LFO / PMD / AMD / TRANS / OPS；TRANS 24 表示不移调。设备宏与网页详细数据、导出和保存保持一致。ALG05 新增设备上逐个算子的 21 项声音字段和 ENABLE；全局音高包络、同步与其余 LFO 细节仍使用网页详细编辑。包络、键盘/力度缩放、失谐和部分调制深度仍为近似 DSP，实现不是原版 DX7/Dexed 的逐样本复刻，复音限制仍为每轨 2 音。
 
 内置 DX7 声音改为自制 **FM EPIANO、FM BASS、FM BELL**，保留 SIX SINES 作为参考声音。这些是本项目原创测试音色，不是 Yamaha 工厂库；实际音质需要真机试听。想用经典音色，可从 Yamaha Black Boxes 下载标准 SYX，导入、试听，再单个或批量替换。
 
@@ -50,13 +74,13 @@ Sound 页选 DX7 后自动读取 **145 个标准声音字段**：每个算子的
 | --- | --- |
 | ANALOG / DIGITAL / PHASE / LOFI / SAMPLE / VOICE / TRIO / WHEEL / GRAIN / ADDIT | 引擎源码与 ALG03 前保留版本一致，没有删减原有参数；不是各历史合成器全部功能的模拟器。 |
 | PLUCK | 原来的 6 个预设和渲染结果保留；独立 KS 分支使用共享延迟线。 |
-| DX7 | ALG03 已有完整网页字段，但入口隐蔽、设备宏有限；ALG04 将详细编辑移到 Sound 页并补宏，DSP 仍存在上述近似。 |
+| DX7 | ALG03 已有完整网页字段，但入口隐蔽、设备宏有限；ALG04 将详细编辑移到 Sound 页并补宏，ALG05 增加设备算子独立编辑，DSP 仍存在上述近似。 |
 | VA | 独立 VA 实现，8 个引擎参数 + 公共包络/滤波/调制/效果；不是移植 Baud Girl VA，因此它的专用参数/音色不一一对应。 |
 | KSDRUM / KSWIRE / KSCOMB | 独立参数化 KS 变体，分别控制随机反馈、色散与第二梳状分支；不承诺复刻其他硬件/插件所有参数。 |
 
 参见 [引擎参数审查](docs/ENGINE_PARAMETER_AUDIT.md)。
 
-## ALG04 测试版新增功能
+## ALG05 测试版新增功能
 
 - **DX7**：六算子、32 种连接算法；网页导入标准 Yamaha 单音色和 32 音色库 `.syx`，展开后逐个试听 / 替换。设备每条 DX7 音轨最多 2 音复音，完整外部库留在浏览器端。
 - **VA**：SAW / SQR / TRI / SIN / SYNC，五振荡器叠加、失谐、LP12 / LP24 / BP / HP、共振与驱动；每轨最多 4 音。
@@ -74,7 +98,7 @@ Sound 页选 DX7 后自动读取 **145 个标准声音字段**：每个算子的
 4. 重启后重新加载该槽，检查 DX7 参数；再测试项目保存和切换。
 5. 测试 VA 与三种独立 KS 分类，同时播放鼓轨和其他音轨，检查声音与操作响应。
 
-ALG04 自动读取 ALG02 / ALG03 用户银行及 FUN4 / FUN5 工程，保留音色、DX7 扩展数据和音序。新银行记录为 v3，工程为 FUN6；保存后旧 ALG02 / ALG03 固件不能直接读取新格式，回退前应导出 JSON 和工程备份。更换固件并不等于把现有用户槽重新增加一份。
+ALG05 与 ALG04 使用相同的银行 v3 / 工程 FUN6 格式，并自动读取 ALG02 / ALG03 用户银行及 FUN4 / FUN5 工程，保留音色、DX7 扩展数据和音序。新银行记录为 v3，工程为 FUN6；保存后旧 ALG02 / ALG03 固件不能直接读取新格式，回退前应导出 JSON 和工程备份。更换固件并不等于把现有用户槽重新增加一份。
 
 ## 项目来源
 
@@ -82,18 +106,18 @@ ALG04 自动读取 ALG02 / ALG03 用户银行及 FUN4 / FUN5 工程，保留音�
 
 SLOOP 本身源自 **[Felucca](https://github.com/hugelton/Felucca)**，由 Leo Kuroshita（[@kurogedelic](https://github.com/kurogedelic)）/ [Hügelton Instruments](https://hugelton.com/) 开发。原有合成引擎、音序器、编辑器与安装器的基础来自这些上游项目。
 
-ALG-04 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloop-fm1/tree/f2b44c219b8a4ac00bc06dca756cdae8a259dd1a)。上游后续更新不会自动包含在这个固件中。
+ALG-05 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloop-fm1/tree/f2b44c219b8a4ac00bc06dca756cdae8a259dd1a)。上游后续更新不会自动包含在这个固件中。
 
-## ALG-04 新增了什么
+## ALG-05 新增了什么
 
-| 项目 | SLOOP 2.2 基线 | ALG-04 |
+| 项目 | SLOOP 2.2 基线 | ALG-05 |
 | --- | --- | --- |
 | 合成引擎 | 9 种 | **16 种**，新增 PLUCK、ADDIT、DX7、VA、KSDRUM、KSWIRE、KSCOMB |
 | 工厂音色 | 68 个 | **93 个**，共新增 23 个 |
 | 合成音轨 / 鼓轨 | 3 + 1 | 3 + 1 |
 | 鼓组 | 37 套 | 37 套，沿用上游 |
 | 用户音色槽 | 32 个 | 32 个，沿用上游 |
-| 网页安装 | 上游固件安装器 | 随包附带 ALG-04 固件，并校验 SHA-256 |
+| 网页安装 | 上游固件安装器 | 随包附带 ALG-05 固件，并校验 SHA-256 |
 | 网页编辑 | 上游编辑器 | 支持新增引擎参数与预设 |
 
 - **PLUCK**：分数延迟 Karplus–Strong 拨弦物理建模，可调整激励、阻尼、拨弦位置与支撑音。新增 NYLON、STEEL、HARP、MUTED、WIRE、BASS。
@@ -120,13 +144,13 @@ ALG-04 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloo
 
 ## 链接导航
 
-### ALG-04 自定义版
+### ALG-05 自定义版
 
-项目仓库：[shaw-core/Sloop_ALG02](https://github.com/shaw-core/Sloop_ALG02)。以下为项目的部署地址。需要上传本测试包后，线上页面才会更新为 ALG04。
+项目仓库：[shaw-core/Sloop_ALG02](https://github.com/shaw-core/Sloop_ALG02)。以下为项目的部署地址。需要上传本测试包后，线上页面才会更新为 ALG05。
 
-- [ALG-04 网页安装器](https://shaw-core.github.io/Sloop_ALG02/webapp/installer/)
-- [ALG-04 网页音色编辑器](https://shaw-core.github.io/Sloop_ALG02/webapp/editor/#sound)
-- [下载随仓库附带的固件](firmware/sloop-ALG04-TEST.fwsc)
+- [ALG-05 网页安装器](https://shaw-core.github.io/Sloop_ALG02/webapp/installer/)
+- [ALG-05 网页音色编辑器](https://shaw-core.github.io/Sloop_ALG02/webapp/editor/#sound)
+- [下载随仓库附带的固件](firmware/sloop-ALG05-TEST.fwsc)
 - [下载对应版本源码](source.zip)
 
 上面两条文件链接对应交付包的目录结构。源码保留为 ZIP 即可，不影响网页安装与编辑。
@@ -143,7 +167,7 @@ ALG-04 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloo
 - [Felucca 源码仓库](https://github.com/hugelton/Felucca)
 - [FM-1-transporter 恢复工具项目](https://github.com/kurogedelic/FM-1-transporter)
 
-**上游安装器安装的是原版 SLOOP，不包含 ALG-04 的 PLUCK / ADDIT。使用新增引擎请打开自己部署的 ALG-04 页面。** 编辑新增音色也建议使用随包提供的编辑器。上游手册用于参考共同功能，新增引擎请以本 README 为准。
+**上游安装器安装的是原版 SLOOP，不包含 ALG-05 的 PLUCK / ADDIT。使用新增引擎请打开自己部署的 ALG-05 页面。** 编辑新增音色也建议使用随包提供的编辑器。上游手册用于参考共同功能，新增引擎请以本 README 为准。
 
 ## 1. 网页地址与安装
 
@@ -165,7 +189,7 @@ ALG-04 使用的上游基线是提交 [`f2b44c2`](https://github.com/isod89/sloo
 1. 先导出需要保留的音色、工程和采样，并保留官方固件与恢复工具。
 2. 使用电脑上的 Chrome 或 Edge，通过 USB **数据线**连接 FM-1。
 3. 关闭 M-UPGRADE、DAW 及其他正在连接 FM-1 的 MIDI 网页。
-4. 打开网站安装首页，确认显示的是 `FM-1_984 / SLOOP ALG04 TEST`。
+4. 打开网站安装首页，确认显示的是 `FM-1_985 / SLOOP ALG05 TEST`。
 5. 点击 **INSTALL**，允许 MIDI / SysEx 权限，等待页面提示完成并让设备重启。
 
 安装过程中保持供电，不要拔线、关闭页面或让电脑休眠。使用部署后的 HTTPS 页面，不要直接双击本地 HTML 文件安装。
@@ -305,7 +329,7 @@ PICK 和 SEED 的变化主要在下一次音符触发时体现。BODY 使用 ADS
 
 ### DX7：导入、详细编辑与替换
 
-1. 连接安装 ALG04 的 FM-1，在 Library 页按 Import，选择 `.syx` 文件。整个音色库拆为独立条目，保存在浏览器 Library，不会自动改写设备。
+1. 连接安装 ALG05 的 FM-1，在 Library 页按 Import，选择 `.syx` 文件。整个音色库拆为独立条目，保存在浏览器 Library，不会自动改写设备。
 2. Library 的引擎筛选选 **DX7**；输入名称搜索，比如 `E.PIANO`。选中条目按 Audition。
 3. 常规参数页可改 ALG（1–32）、FB（0–7）、BRIGHT、LFO、PMD、AMD、TRANS 和 OPS（0–63 位掩码，默认全部算子开启）。
 4. Sound 页自动展开 **DX7 六算子详细编辑** 并读取当前音色；Read 可刷新。OP1–OP6 每个面板可修改电平、频率模式 / 粗调 / 微调 / 失谐、四段包络、键盘缩放、力度与 AM 灵敏度。下方可修改音高包络、移调和 LFO。
@@ -479,7 +503,7 @@ FX 的白键 1–16：LOOP 1/4、LOOP 1/8、LOOP 1/16、LOOP 1/32、STUTTER、RE
 
 ## 10. 将网站放到 GitHub Pages
 
-1. 解压交付的 `SLOOP_ALG04_GitHub_Pages.zip`。
+1. 解压交付的 `SLOOP_ALG05_GitHub_Pages.zip`。
 2. 将里面 **github-pages 文件夹的内容**上传到仓库根目录；根目录应有 `index.html`、`webapp/`、`firmware/`、`source.zip` 和 `.nojekyll`。
 3. 将本文件作为根目录的 `README.md` 上传。
 4. 在仓库 **Settings → Pages → Build and deployment** 选择 **Deploy from a branch**，选择 `main` 和 `/(root)`，点击 Save。
@@ -491,7 +515,7 @@ FX 的白键 1–16：LOOP 1/4、LOOP 1/8、LOOP 1/16、LOOP 1/32、STUTTER、RE
 
 ## 致谢与许可
 
-感谢 SLOOP 与 Felucca 的作者和贡献者。ALG-04 的主要新增工作是七种扩展引擎、23 个新增预设、DX7 / JSON 外部导入、详细编辑、槽位替换、分类与个人页面，以及可部署的安装包；四轨系统、鼓机、录音、歌曲、基础编辑器与更新协议来自上游。
+感谢 SLOOP 与 Felucca 的作者和贡献者。ALG-05 的主要新增工作是七种扩展引擎、23 个新增预设、DX7 / JSON 外部导入、详细编辑、槽位替换、分类与个人页面，以及可部署的安装包；四轨系统、鼓机、录音、歌曲、基础编辑器与更新协议来自上游。
 
 - DX7 路由、包络、音高包络和 LFO 参考 Google Music Synthesizer for Android（Apache-2.0），保留 [Apache-2.0 许可证](docs/Apache-2.0.txt) 和来源署名。
 - 应用源码：**GPL-3.0-only**。上游 [LICENSE](https://github.com/isod89/sloop-fm1/blob/main/LICENSE) 与 [LICENSING.md](https://github.com/isod89/sloop-fm1/blob/main/LICENSING.md) 可供参考；本修改版的具体文件许可见 `source.zip` 内说明。分发修改版时应保留版权、许可证并提供对应源码。

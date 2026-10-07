@@ -1,0 +1,16 @@
+font S: ter-u16n.bdf 16px h 16, digit adv 8, 21504 B
+font L: ter-u16n.bdf 16px h 32, digit adv 16, 24576 B
+icons: 0 of 86 (no icons.png), 0 B
+tables: /workspace/scratch/52197f423ed3/sloop-alg03/build/gen/felucca_tables.h
+loader: image 7892 B at 0x1c0a800, bss end 0x1c0f2a8
+loader: ota.bin 6646 B
+generated waves into /workspace/scratch/52197f423ed3/sloop-alg03/build/genwav
+samples: 8 sets, 51 zones, 315854 B ADPCM (cached)
+drum kits: 32 synthesised -> /workspace/scratch/52197f423ed3/sloop-alg03/build/gen/felucca_drumkits.h
+logo: splash 240x188, 4729 B RLE -> /workspace/scratch/52197f423ed3/sloop-alg03/build/gen/sloop_logo.h
+  ok    .ram_text: 909 insns, no calls
+  ok    image 547816 B; RAM .data+.bss 92640 B of 98304; pool 331488 B of 344064
+  ok    register access: hal/ only (src/, loader/ clean)
+app      /workspace/scratch/52197f423ed3/sloop-alg03/build/felucca.bin  547816 B
+loader   /workspace/scratch/52197f423ed3/sloop-alg03/build/loader/ota.bin  6646 B
+package  /workspace/scratch/52197f423ed3/sloop-alg03/build/felucca.fwsc  609802 B, identity FM-1_985

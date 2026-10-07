@@ -1,8 +1,8 @@
-fix: restore live scope and add editable factory preset overrides
+fix: show live waveforms on EDIT pages and add DX7 operator controls
 
-- Capture volatile stereo scope samples with a stable display snapshot
-- Add persistent factory overrides using the 32 user preset slots
-- Add multi-select batch replacement, backups and optional factory bindings
-- Move the full DX7 editor to Sound and synchronize LFO and transpose macros
-- Add original electric piano, bass and bell DX7 presets
-- Migrate ALG03 banks/projects and document engine parameter limitations
+- Draw and continuously refresh the output scope on all EDIT and VOICE pages
+- Add OP1-OP6 selection and all 21 per-operator fields plus enable controls
+- Preserve packed DX7 fields, other operators, and saved user/project data
+- Hide DX7-only pages on other engines and after track changes
+- Test real EDIT drawing, automatic refresh, operator edits and save/load
+- Document hardware page controls and release ALG05 TEST / FM-1_985

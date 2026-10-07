@@ -1,0 +1,13 @@
+{
+  "product": "FM-1_985",
+  "package_bytes": 609802,
+  "app_bytes": 547816,
+  "package_sha256": "3017149d3de8e4b324b5bb1629bf30fc1b0b7745627e23927fa543b4626e8ee9",
+  "app_sha256": "6ec12cc7fbf6830ea58dd5bc86aa67d90bf2d4db6260d7b09d84a967142383be",
+  "container_and_app_crc": true,
+  "app_matches_build": true,
+  "padding_ff": true,
+  "entry_point": "0x2000120",
+  "hardware_tested": false,
+  "legacy_unpacker_limitation": "jl-misctools boot-bank decoder rejects this SDK SPL; not used as a pass criterion"
+}

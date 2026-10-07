@@ -1,0 +1,1 @@
+PASS: factory binding, duplicate rejection, rewrite preservation, unbind, all tracks, EDIT live scope, 6 operators / all 22 fields, packed masks, save/load, engine page filtering

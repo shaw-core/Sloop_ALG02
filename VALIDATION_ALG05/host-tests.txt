@@ -1,0 +1,607 @@
+== flash storage (A/B, torn writes)
+empty flash loads nothing                      ok
+save A                                         ok
+load returns A                                 ok
+save B                                         ok
+load returns B (newer seq)                     ok
+torn save keeps B                              ok
+header not written keeps B                     ok
+save A again                                   ok
+load returns A                                 ok
+both copies corrupt -> nothing                 ok
+other objects untouched                        ok
+settings save/load                             ok
+CRC-32 is zlib's (check value 0xCBF43926)      ok
+newer copy rotten -> the older one loads       ok
+save over the rotten copy                      ok
+... loads the new data                         ok
+both headers broken -> nothing                 ok
+data stays in the Felucca regions (autosave too) ok
+every object copy has its own sector           ok
+storage test passed
+== application USB recovery and boot-loop guard
+recovery: boot failures, manual key, timer wrap, polled USB during OTA, retry, flash refusal and ROM fallback passed
+== song order, timing, repeats and missing scenes
+arranger: order, repeats, stop, loop, tempo change, fractional timing and invalid scenes PASS
+== song: four simultaneous tracks, scene transition and stop
+song live: B on the bar (176416), SONG REC -> A 2 bars, B 3 bars PASS
+song audio: 3 synth parts + drums, section at 176416, stop at 352800, no held sequencer notes PASS
+== song screen: commands, load (OCT+ twice), display bounds
+song UI: independent plan/scene save, overwrite confirmation, stopped-only changes, missing scene, bounds PASS
+== drum lanes, kit audio, metronome, record arm, free take
+drums: 16 lanes a step (levels, ratchets), the key / GM maps, every kit distinct, bounded audio and finite tails, metronome (OFF/REC/ON, accent), record: first note starts the loop, at once while playing, latency-compensated steps, free takes set the loop and tempo, arm follows the track PASS
+== sequencer 2.0: no drift, ratchets, roll, erase / undo, ghost / hard, chords, mute / solo
+seq2: 64 bars at 87..174 BPM: every kick in the block of its downbeat click    ok
+seq2: DIV 1/4 -> 1/32 and 40 -> 240 BPM mid-step: one step a block, no burst   ok
+seq2: SWING 75 %, LEN 3 against LEN 16: in phase after 15 bars (no drift)      ok
+seq2: LEN 32 -> 16 while playing: in phase with a 16-step track                ok
+seq2: drums: a hat x4 plays 4 even hits in its step, the next step plays       ok
+seq2: synth: a note x3 starts 3 times in its step                              ok
+seq2: roll 1/32 held 8 steps: ~16 hits                                         ok
+seq2: roll 1/32 recorded: one hit a step, ratchet x2                           ok
+seq2: EDIT + hat while playing steps 4..7: those hats gone, the rest and the kicks kept ok
+seq2: undo: the erased hats are back                                           ok
+seq2: EDIT + hat while stopped: every hat gone                                 ok
+seq2: OCT- / OCT+ held on the drums: a ghost snare and a hard kick recorded    ok
+seq2: ... and played at 42 / 127                                               ok
+seq2: chord 9TH on C4 in C minor: C Eb Bb D                                    ok
+seq2: chord TRIAD on D4 in C minor: D F Ab                                     ok
+seq2: chord mode: the black keys are silent                                    ok
+seq2: drum track muted: no hits                                                ok
+seq2: track 1 soloed: the drums silent (faded out)                             ok
+seq2: solo off: the drums back                                                 ok
+seq2: all checks ok
+== synthesised drum kits: every kit x sound bounded, audible, finite, levels, cost
+drum kits: 32 synthesised x 16 sounds bounded, audible, finite; levels near the sampled kit PASS
+== punch-in FX: 16 effects, bounded, dry after release, FX-held keys
+punch-in FX: 16 effects change the mix while held, bounded, exact dry mix after release; FX-held keys pick effects, play and record nothing PASS
+== live UI: pages, layers (punch, steps, erase, roll, key, mix), holds, drums, REC, fuzz
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: engine category contains all factory sounds                                ok
+ui: category does not leak another engine                                      ok
+ui: category does not leak another engine                                      ok
+ui: USER category contains only stored user sounds                             ok
+ui: ALL restores complete factory and user bank                                ok
+ui: synth track, no layer: no landmarks (a piano)                              ok
+ui: SEQ tapped: the SEQ pages                                                  ok
+ui: FX tapped: the FX pages                                                    ok
+ui: FX held: the punch layer shows                                             ok
+ui: FX held: keys 1, 5, 9, 13 lit dim (the rows of the grid)                   ok
+ui: FX + the 3rd white key: punch effect 3                                     ok
+ui: key up: the mix comes back                                                 ok
+ui: FX + KNOB 2: DUST                                                          ok
+ui: FX + KNOB 1: the filter (low-pass)                                         ok
+ui: FX used then let go: no FX page                                            ok
+ui: FX held + HOME: locked open, FX let go                                     ok
+ui: FX + HOME: no FX page, no HOME jump                                        ok
+ui: locked FX + the 3rd white key: punch effect 3 (no hands on FX)             ok
+ui: locked FX, key up: the mix comes back                                      ok
+ui: locked FX + KNOB 2: DUST                                                   ok
+ui: locked: PLAY plays and keeps the lock                                      ok
+ui: locked, ENV pressed: unlocked, and only that (no ENV page)                 ok
+ui: locked, HOME tapped: unlocked                                              ok
+ui: locked, FX tapped: unlocked, no FX page                                    ok
+ui: locked SEQ, FX held: unlocked, the FX layer                                ok
+ui: and FX let go: back to playing                                             ok
+ui: locked, HOME held: the menu, unlocked                                      ok
+ui: a drum key played: the SEQ layer's sound (snare)                           ok
+ui: SEQ + white keys 1, 5, 9: snare steps                                      ok
+ui: step 5 held + KNOB 2 / 3: hard, x3                                         ok
+ui: step 1 again: off                                                          ok
+ui: SEQ used then let go: no page change                                       ok
+ui: EDIT + OCT-: undo (the SEQ hold's steps gone)                              ok
+ui: EDIT + OCT+: redo (back, as left)                                          ok
+ui: EDIT + snare (stopped): every snare erased                                 ok
+ui: EDIT + KNOB 2: length x2                                                   ok
+ui: EDIT + OCT-: the length back to 16                                         ok
+ui: ARP + KNOB 1: the roll rate (1/32)                                         ok
+ui: ARP + a key: it rolls                                                      ok
+ui: key up: the roll ends                                                      ok
+ui: SCL + D: every part in D                                                   ok
+ui: SCL + KNOB 1: chords (7TH) on the track                                    ok
+ui: GLO + key 1: track 1 muted                                                 ok
+ui: GLO + key 6: track 2 soloed                                                ok
+ui: GLO + the last key, tapped at ~0.6 s: ~100 BPM                             ok
+ui: again: unmuted, no solo                                                    ok
+ui: REC tapped (stopped): armed                                                ok
+ui: REC again: cancelled                                                       ok
+ui: REC held: the press undone, the clear ring                                 ok
+ui: REC held to the end: track 1 cleared                                       ok
+ui: EDIT + OCT-: the cleared track back                                        ok
+ui: REC let go before the end: nothing cleared                                 ok
+ui: SAVE held: the song layer                                                  ok
+ui: store over a used A: asks again                                            ok
+ui: again: the loop stored in A                                                ok
+ui: an empty C: stored at once                                                 ok
+ui: stopped: B loaded as the loop                                              ok
+ui: an empty D: not played                                                     ok
+ui: playing: A asked for the next bar                                          ok
+ui: SONG REC armed (loop mode)                                                 ok
+ui: SONG REC again: off                                                        ok
+ui: loop / song: song mode                                                     ok
+ui: again: loop mode                                                           ok
+ui: SAVE held and let go: no song page, no save                                ok
+ui: SAVE tapped on TRACKS: the song page                                       ok
+ui: the drum screen                                                            ok
+ui: DRUMS: KNOB 3 adds the kick on step 1                                      ok
+ui: DRUMS: KNOB 4 softer                                                       ok
+ui: DRUMS: KNOB 1 / 2 bounded (16 sounds, 16 steps)                            ok
+ui: pages, layers (punch, steps, erase, roll, key, mix), layer lock, song layer, REC hold, drums, REC, 20000-frame fuzz PASS
+== soak: 10 minutes of random live use (bounded, no hanging voices, idle after stop)
+soak: 10 min, 20771 events, peak 26561, max block 1532.6 us, mean 2.65 us; tail 0
+soak: free takes 107, closed into a loop 15
+soak: random live use, bounded output, no hanging voices, idle after stop PASS
+== user presets (UP_PUT parser, bank round trip, versions)
+UP_PUT frame < 640 bytes                       ok
+UP_PUT parses                                  ok
+UP_PUT values (negative v14 too)               ok
+pattern: rest drops flags, tie has no note     ok
+UP_PUT short frame -> args                     ok
+UP_PUT slot 32 -> args                         ok
+UP_PUT bad engine -> args                      ok
+UP_PUT empty name -> args                      ok
+UP_PUT 13-char name -> args                    ok
+UP_PUT 12-char name ok                         ok
+name shown upper case                          ok
+bank fits one object                           ok
+bank save                                      ok
+bank load: the record is back                  ok
+other slots empty                              ok
+bank 0 never written -> empty                  ok
+banks in 0xDC000..0xDFFFF                      ok
+bank with another record size -> empty         ok
+record with another version -> empty           ok
+np < P_COUNT: mapped by count                  ok
+old record (np 53): SLICER and CHORD defaults, E0..E7 kept ok
+SLOOP 1.0 record (np 57): CHORD default, the rest kept ok
+np == P_COUNT: as stored                       ok
+steps -> pattern                               ok
+empty sequencer -> empty pattern               ok
+PLUCK: parse/save/load parameters              ok
+ADDIT: parse/save/load parameters              ok
+legacy ALG02 bank layout is 3080 bytes         ok
+ALG02 -> ALG03: all 16 names, engines, parameters and patterns retained ok
+extended patch UP_PUT parses                   ok
+128-byte voice survives flash bank save / reboot load ok
+truncated extended voice rejected              ok
+non-7-bit extended voice rejected              ok
+ALG03 -> ALG04 all 16 voices/patterns, no bindings ok
+user preset test passed
+== TRS MIDI parser
+uart: running status, realtime, SysEx, system common ok
+uart: channels 1, 2, 3, 10, 16 -> USB-MIDI packets   ok
+usb: ota_wire_send packets (CIN 4.. then 5/6/7)      ok
+usb: received frame == the bytes between F0 and F7   ok
+usb: a frame while one is pending is dropped         ok
+usb: a truncated frame is replaced by the next one   ok
+usb: an oversized frame (698 B) is not taken         ok
+usb: soft key -> uboot_req, not a frame              ok
+usb: upgrade key -> ota_req, not a frame             ok
+usb: bytes outside F0..F7 are ignored                ok
+usb: send with a full ring and no host fails at once ok
+usb: send with a full ring times out (200 ms)        ok
+midi parser test passed
+tests/ota_test.c: In function ‘ota_wire_send’:
+tests/ota_test.c:65:10: warning: ‘u’ may be used uninitialized [-Wmaybe-uninitialized]
+   65 |     if (u[2] == 0x11) { ident_replies++; return 0; }
+      |         ~^~~
+tests/ota_test.c:61:13: note: ‘u’ declared here
+   61 |     uint8_t u[64], m[600];
+      |             ^
+== M-UPGRADE entry
+handshake answered                                   ok
+identity frame is FM-1_982                           ok
+recovery identity is distinct from a successful normal boot ok
+  18 requests
+session commits                                      ok
+headers + loader + confirm, no head reads            ok
+staged body == the package's loader                  ok
+LOADER.BIN head CRC                                  ok
+record at 0xE4F00 == RAM record                      ok
+record CRC / type / magic / ota_addr                 ok
+nothing written outside 0xE0000..0xE4FFF             ok
+boot cleanup erases the area                         ok
+second boot: nothing to do                           ok
+host gone -> no commit, area clean                   ok
+no 'success' -> -13, no commit, area clean           ok
+ota test passed
+== update loader: other app -> this build
+  rc 0, 1180 requests, 88 sector erases
+install completes                                        ok
+app area == the new package's flash.bin                  ok
+flash head [0, 0x4000) untouched                         ok
+finish asked (0xF0000000)                                ok
+update record cleared (RAM + flash)                      ok
+no write outside the allowed windows                     ok
+re-run with the same package erases nothing              ok
+foreign key / damaged app head refused, nothing erased   ok
+a byte damaged once: caught by the CRC, fixed by a 2nd pass ok
+a damaged package: refused after 3 passes, the record stays ok
+... also when the damage is in the head                  ok
+no "success" from the host: the record stays             ok
+... and the next session finishes                        ok
+unknown flash chip: nothing written, record dropped      ok
+loader test passed
+== scales: white-key mapping and note lifecycle
+scales: all 16 scales, 12 roots, octave/transpose ranges, bypass, drums and SNAP ok
+scales: silent keys, arp, live recording, MIDI out and held-note changes ok
+== DSP render (ANALOG preset 0)
+== TRACKS: 4-track pattern, live recording (lengths, swing), voice budget, engine switch, cost
+tracks: recording: drums step 4 = 4 lanes (kick snare hat + clap: yes), hits when step 4 played right after: 3 (want 3: the clap is not triggered twice) ok
+tracks: recording: MIDI ch 3 -> lead step 1 = 84 (want 84) ok; keys -> pad step 14 = 2 notes 60 64 ok
+tracks: voices sounding at most 6 (budget 8) ok; given up to another part 0; 0 samples near full scale
+tracks: stealing across parts: 5 voices taken; largest sample step at a take / before it: at most 0.83 x (a hard cut: several x) ok
+tracks: TRS MIDI IN: ch 1..3 -> parts ok, ch 10 -> drums ok, ch 5 -> the selected track ok; note-offs (running status, vel 0) ok
+tracks: TRS MIDI IN: note-off after another track was selected reaches the note's track ok; ch 3 records into armed track 3 ok
+tracks: recording lengths: held 3.3 steps -> NOTE TIE TIE (the 4th step put back) ok; 0.3 step -> one step ok; past the middle of the next -> NOTE TIE ok
+tracks: recording lengths: a chord ties until its last key ok; capped at LEN 4 ok; MONO legato A..B -> A TIE B TIE ok
+tracks: recording with SWING 50 %: nearest swung step, as heard (0.55 into a long step stays, 0.56 into a short one moves on) ok
+tracks: engine switch ANALOG -> DIGITAL (release tail): largest sample step 777 in the 10 ms after, 770 in the 0.1 s before (1.01 x)
+tracks: engine switch ANALOG -> PHASE (chord held): largest sample step 718 in the 10 ms after, 719 in the 0.1 s before (1.00 x)
+tracks: engine switch ANALOG -> LOFI (chord held): largest sample step 399 in the 10 ms after, 641 in the 0.1 s before (0.62 x)
+tracks: engine switch: at most 1.01 x the step before (a hard cut: several x) ok
+tracks: a note during the switch sounds on the new engine (SAMPLE) ok
+tracks: WAVs in build/tracks_demo: tracks_demo.wav (mix), t1_bass.wav, t2_pad.wav, t3_lead.wav, t4_drums.wav, steal.wav, engine_switch.wav
+tracks: one part, 8 notes held + drums (host -O2, ns per sample, heaviest preset per engine): ANALOG FUNK BASS 174.0, DIGITAL FM BASS 167.6, PHASE CZ STRING 136.2, LOFI 8BIT ARP 96.7, SAMPLE DUSTY PNO 148.3, VOICE WOW BASS 140.0, TRIO RAVE STAB 164.3, WHEEL HOUSE ORGN 165.1, GRAIN VIBE HAZE 119.5, PLUCK BASS 116.0, ADDIT PRISM 156.9, DX7 FM BASS 127.4, VA SUPER SAW 155.4, KSDRUM DRY TOM 113.3, KSWIRE STIFF WIRE 125.7, KSCOMB COMB BELL 103.5
+tracks: worst single part: ANALOG FUNK BASS 174.0 ns
+tracks: DIGITAL + PHASE + VOICE + drums, 3 + 3 + 2 notes: 177.8 ns (1.02 x the worst single part), 8 voices
+tracks: the same, 8 + 8 + 4 notes asked for (budget keeps 8): 189.8 ns (1.09 x)
+tracks: two VOICE parts, 4 + 4 voices (the heaviest 8 the budget allows): 231.4 ns (1.33 x); no notes (drums, buses, 3 idle parts): 56.2 ns
+tracks: all checks ok
+== project formats (FUN3 / FUN2 / FUN1 -> FUN4), capture / apply, autosave
+layout: P_CHORD just before P_E0 (50), P_COUNT = format 3's + 1    ok
+format 4 fits one flash object; 4 slots fit .noinit                ok
+FUN3 -> FUN4: converted, valid format 4 slot                       ok
+FUN3 -> FUN4: globals (swing 50 -> 40: the MPC scale), the new ones default ok
+FUN3 -> FUN4: parameters (P_E0.. moved), steps, drum notes -> lanes ok
+FUN2 image is 2552 bytes (as stored)                               ok
+FUN2 -> FUN4: converted, valid format 4 slot                       ok
+FUN2 -> FUN4: globals and selected track                           ok
+FUN2 -> FUN4: every parameter mapped, SLICER OFF, CHORD OFF (4 tracks) ok
+FUN2 -> FUN4: engine bytes kept (WHEEL 7, ANALOG 0, TRIO 6), drum 0 ok
+ALG02 FUN4 -> FUN5: all tracks / parameters / steps / engine bytes retained ok
+corrupt legacy FUN4 rejected                                       ok
+FUN5 round trip: extended voice, levels, ratchets, lanes, engine 8 ok
+FUN2 with a bad checksum: refused                                  ok
+FUN2 with a wrong length: refused                                  ok
+FUN4 size with a FUN3 magic: refused                               ok
+FUN3 with a bad checksum: refused                                  ok
+FUN1 -> FUN4: track 1 mapped, tracks 2..4 defaults                 ok
+the working project: capture -> apply round trip (levels, lanes, DUST) ok
+ALG03 FUN5 migrates DX7 macro globals                              ok
+project format test passed
+== SLICER: no clicks, timing, sync with the sequencer, STUT, cost, demos
+slicer: no clicks: GATE pattern 1, 1/16, 120 BPM, 100 %: largest step 349 (sine 314, 1.1 x) ok
+slicer:   closed steps silent (rms 0.79)                                           ok
+slicer: no clicks: GATE pattern 12, 1/32, 240 BPM, 100 %: largest step 350 (sine 314, 1.1 x) ok
+slicer:   closed steps silent (rms 0.84)                                           ok
+slicer: no clicks: GATE pattern 2, 32T, 240 BPM, swing 50 %: largest step 349 (sine 314, 1.1 x) ok
+slicer:   closed steps silent (rms 0.59)                                           ok
+slicer: no clicks: GATE pattern 5, 8T, 90 BPM, 60 %: largest step 348 (sine 314, 1.1 x) ok
+slicer: no clicks: STUT pattern 7, 1/16, 120 BPM, 100 %: largest step 392 (sine 314, 1.2 x) ok
+slicer: no clicks: STUT pattern 3, 32T, 200 BPM, 70 %, swing 30 %: largest step 314 (sine 314, 1.0 x) ok
+slicer: no clicks: STUT pattern 9, 1/8, 40 BPM (loop shorter than the step): largest step 402 (sine 314, 1.3 x) ok
+slicer: no clicks: STUT pattern 13, 16T, 133 BPM: largest step 358 (sine 314, 1.1 x) ok
+slicer: no clicks: mode / pattern / depth / rate turned while it runs: 422 (1.3 x) ok
+slicer: timing: GATE at 97 BPM, swing 20 + 10 %: 64 steps open / closed as the pattern says ok
+slicer: timing: every ramp ends / starts on the swung step boundary (sample exact) ok
+slicer: sync: 4 tracks, 131 BPM, swing per track: the sequencer's step at 16538 blocks x 4 ok
+slicer: OFF: the signal is not touched                                             ok
+slicer: STUT: the repeat steps play the live step (24 of 24 checked)               ok
+slicer: cost: no instruction counter on this host
+slicer: demos in build/slicer_demo (song_dry / song_slicers, pad, acid, drums: dry and sliced)
+slicer test passed
+== regression: golden renders, health, voices, CPU budget
+regress: voices: budget of 8 across 3 parts: 3 POLY parts, random notes: at most 8 voices active (budget 8), VOICE part at most 4 (cap 4), 665 voices taken, 0 still fading after their KILL_BLOCKS, all free 1.22 s after the note-offs ok
+regress: voices: a stolen voice fades: 5 takes; largest sample step at a take 1490 vs 2397 before it (0.62 x, limit 1.50 x) ok
+regress: voices: MONO keeps its note: MONO part held its note through 868 voices taken from the others: lost in 0 blocks ok
+regress: voices: LEGATO keeps its note: LEGATO part held its note through 868 voices taken from the others: lost in 0 blocks ok
+regress: voices: UNISON keeps its note: UNISON part held its note through 875 voices taken from the others: lost in 0 blocks ok
+regress: voices: VOICE engine cap: VOICE engine, 8 keys: at most 4 voices in POLY, 4 in UNISON (cap 4); freed after release ok
+regress: routing: no hanging notes: 14135 random MIDI / key events on ch 1-3, 10, 5, 16 and the keys, track selection changing, 3 rounds: no gate left on, every voice free ok
+regress: CPU: no instruction counter on this host (proc_pid_rusage); the budget is not checked
+regress: CPU, one part with 8 notes held (VOICE 4), heaviest preset per engine (instructions / ns per sample):
+regress:   ANALOG   808 BOOM            0 instr     0.0 ns
+regress:   DIGITAL  RHODES              0 instr     0.0 ns
+regress:   PHASE    CZ BASS             0 instr     0.0 ns
+regress:   LOFI     GAME LEAD           0 instr     0.0 ns
+regress:   SAMPLE   GRAND PNO           0 instr     0.0 ns
+regress:   VOICE    CHOIR AAH           0 instr     0.0 ns
+regress:   TRIO     FAT BASS            0 instr     0.0 ns
+regress:   WHEEL    SOUL ORGAN          0 instr     0.0 ns
+regress:   GRAIN    LOFI CLOUD          0 instr     0.0 ns
+regress:   PLUCK    NYLON               0 instr     0.0 ns
+regress:   ADDIT    PURE                0 instr     0.0 ns
+regress:   DX7      FM EPIANO           0 instr     0.0 ns
+regress:   VA       SUPER SAW           0 instr     0.0 ns
+regress:   KSDRUM   KS DRUM             0 instr     0.0 ns
+regress:   KSWIRE   STIFF WIRE          0 instr     0.0 ns
+regress:   KSCOMB   COMB BELL           0 instr     0.0 ns
+regress:   idle                         0 instr    35.9 ns
+regress:   idle_drums                   0 instr    68.2 ns
+regress:   3parts_full_drums            0 instr   188.9 ns
+regress: 122 golden renders (0 changed, 0 gone), 0 health failures, 0 voice / routing checks failed, 0 CPU entries over budget (0 notes), 0 crashes; 1.5 s
+== regression: target cost of the render loops
+target: dx7_render        291 instructions,  195 in loops, 5 divides,  0 calls there: cost   490 (budget 490) ok
+target: va_render         431 instructions,  313 in loops, 10 divides,  0 calls there: cost   972 (budget 972) ok
+target: ks_drum_render    329 instructions,  178 in loops, 10 divides,  0 calls there: cost   258 (budget 258) ok
+target: ks_wire_render    346 instructions,  182 in loops, 10 divides,  0 calls there: cost   262 (budget 262) ok
+target: ks_comb_render    324 instructions,  172 in loops, 10 divides,  0 calls there: cost   252 (budget 252) ok
+target: mix_block        4862 instructions, 4703 in loops, 42 divides, 81 calls there: cost 143960 (budget 143512) ok
+target: pluck_render      350 instructions,  188 in loops, 15 divides,  0 calls there: cost   308 (budget 309) ok
+target: additive_render   220 instructions,  122 in loops, 6 divides,  0 calls there: cost   275 (budget 275) ok
+target: analog_render     626 instructions,  478 in loops, 20 divides,  0 calls there: cost   638 (budget 638) ok
+target: digital_render    482 instructions,  333 in loops, 0 divides,  0 calls there: cost   333 (budget 333) ok
+target: phase_render      189 instructions,   79 in loops, 0 divides,  2 calls there: cost    79 (budget 79) ok
+target: lofi_render       311 instructions,  128 in loops, 0 divides,  0 calls there: cost   128 (budget 128) ok
+target: sample_render     188 instructions,   90 in loops, 0 divides,  1 calls there: cost   126 (budget 126) ok
+target: formant_render    614 instructions,  298 in loops, 2 divides,  0 calls there: cost   314 (budget 314) ok
+target: trio_render       615 instructions,  301 in loops, 5 divides,  2 calls there: cost   341 (budget 341) ok
+target: trio_pass         257 instructions,  151 in loops, 3 divides,  0 calls there: cost   175 (budget 175) ok
+target: drawbar_render    287 instructions,  180 in loops, 0 divides,  0 calls there: cost   267 (budget 267) ok
+target: drawbar_block     202 instructions,  102 in loops, 0 divides,  0 calls there: cost   102 (budget 102) ok
+target: grain_render      825 instructions,  290 in loops, 2 divides,  1 calls there: cost  1734 (budget 1734) ok
+target: grain_block       326 instructions,  138 in loops, 0 divides,  1 calls there: cost   138 (budget 138) ok
+target: slicer_track      311 instructions,  266 in loops, 5 divides,  0 calls there: cost   825 (budget 825) ok
+target: drums_mix         966 instructions,  916 in loops, 2 divides,  1 calls there: cost  6584 (budget 6153) ok
+target: fm1_alnk0_irq     177 instructions,   70 in loops, 1 divides,  1 calls there: cost   255 (budget 255) ok
+== added engines: pitch/parameter boundaries
+PASS: 2560 pitch/parameter scenarios, 128 MIDI notes, 18 presets, retrigger, modulation, silence; peak=16946
+== added engines: shared voices and release
+PASS: PLUCK/ADDIT/PLUCK mixed stress, shared max=8, each part <=4, peak=19643, release frees every voice
+== installer CLI (fm1_install.py) against a simulated FM-1
+pack7 / unpack7 round trip                                       ok
+response: header, address, data, checksum                        ok
+product_of / logical_image (synthetic)                           ok
+install: running -> loader -> Felucca (11 reads)                 ok
+install: device already in update mode -> finishes the write     ok
+install: answer no -> nothing sent but the handshake             ok
+--info: identity of the connected FM-1                           ok
+--info: device in update mode                                    ok
+no FM-1 port -> exit 3, lists the MIDI inputs                    ok
+--port that matches nothing -> exit 3                            ok
+--port picks a port the default match skips                      ok
+unplugged in step 1 -> exit 4 'lost', nothing written            ok
+unplugged during the write -> exit 4 at once                     ok
+loader stops answering -> exit 4 after the idle time             ok
+read past the package -> exit 4                                  ok
+another identity after the restart -> exit 6                     ok
+another model -> exit 6, nothing sent                            ok
+another firmware's update loader -> exit 6, nothing sent         ok
+no loader after step 1 -> exit 5                                 ok
+package without the loader marker -> exit 2, no MIDI             ok
+... installs with --force                                        ok
+damaged package (a file's CRC) -> exit 2, no MIDI                ok
+not a package -> exit 2                                          ok
+missing file -> exit 2                                           ok
+logical_image / product_of == fm1pkg.js (felucca.fwsc, FM-1_985) ok
+felucca.fwsc carries the Felucca loader marker                   ok
+install tests passed
+== web pages: editor protocol, samples, packages, update protocol
+editor: INFO                                                     ok
+editor: DESC for every parameter                                 ok
+editor: SLICER parameters 45..48 (mock == params.c)              ok
+editor: a factory preset turns the SLICER off                    ok
+editor: all 16 scale names exposed                               ok
+editor: new scale selection is not clamped to the old range      ok
+editor: DUMP                                                     ok
+editor: SET clamps to the range                                  ok
+editor: STEP_SET                                                 ok
+editor: PROJECT save                                             ok
+editor: sample upload (CRC checked by the mock)                  ok
+editor: no reply -> timeout after the retries                    ok
+librarian: parameter keys unique (label#n, E0..E7)               ok
+librarian: UP_LIST, 32 slots in 2 frames                         ok
+librarian: capture = DUMP + first 16 steps                       ok
+librarian: UP_PUT -> UP_GET round trip                           ok
+librarian: UP_PUT to a slot past the bank -> rc 1                ok
+librarian: device names (ASCII, 1..12)                           ok
+librarian: UP_STORE keeps the current sound                      ok
+librarian: UP_LOAD applies the sound, the sequencer stays empty (LIVE) ok
+librarian: UP_ERASE, UP_LOAD of an empty slot -> rc 1            ok
+librarian: audition = G_ENGSEL + SETs of the sound; no pattern, mix, LEN or key; no flash write ok
+librarian: audition keeps the sequencer as it is                 ok
+librarian: pattern ties / rests normalised like the firmware     ok
+librarian: UP_STORE with no name -> automatic name               ok
+library file: versioned, with P_COUNT, labels and engines        ok
+library file: write -> read round trip                           ok
+library file: other ids / engine order mapped by label and name  ok
+library file: a patch for an unknown engine is skipped           ok
+library file: bank export keeps slot numbers                     ok
+library file: reads the old "Save to file" format                ok
+library file: unknown format -> error                            ok
+live: WATCH on                                                   ok
+live: CHANGED while DUMP waits -> push handler, reply still matched ok
+live: RELOAD and STEP_CHANGED routed                             ok
+live: RELOAD after an editor PRESET too, nothing after its STEP_SET ok
+live: PING keeps WATCH on                                        ok
+live: WATCH ends by itself without requests                      ok
+live: drag SETs coalesce (2 frames for 40 values, latest kept)   ok
+live: no timeouts                                                ok
+live: older firmware -> WATCH unanswered (fall back to polling), no bank ok
+tracks: INFO NTRK, TRACK lists 4 (track 4 = drums, engine NENGINES) ok
+tracks: TRACK selects; DUMP / SET act on it, TRACK_DUMP reads any track ok
+tracks: TRACK_STEP set / get on another track                    ok
+tracks: TRACK_MIX level / mute (drums: G_DRLVL)                  ok
+tracks: drum track selected -> DUMP engine NENGINES, UP_STORE / UP_LOAD rc 1 ok
+tracks: WATCH on                                                 ok
+tracks: RELOAD / STEP_CHANGED carry the selected track           ok
+tracks: PROJECT save / load keeps every track and the selection  ok
+tracks: older firmware parses (no tracks)                        ok
+mixer: read = TRACK + pan of every track (TRACK_DUMP)            ok
+mixer: TRACK_MIX level / mute round trip (drums: G_DRLVL, clamped) ok
+mixer: WATCH on                                                  ok
+mixer: pan of any track via SET (other track selected for a moment, then back; no push) ok
+mixer: device-side level (CHANGED push) and REC arm read back    ok
+mixer: drum level on the device pushes G_DRLVL                   ok
+mixer: the mock drum track holds a GM pattern (KICK CHH ...)     ok
+mixer: GM drum names parse (unique, 35..81)                      ok
+v4: WATCH 1 answers 1 as before (no TRACK_CHANGED pushes)        ok
+v4: WATCH 3 -> 3 (TRACK_PARAM / TRACK_CHANGED known)             ok
+v4: TRACK_PARAM get / set on other tracks (clamped as SET, selection kept, no push) ok
+v4: TRACK_PARAM of track 5: no reply                             ok
+v4: TRACK_CHANGED pushes for the other tracks, CHANGED for the selected one ok
+v4: v3 firmware -> WATCH 1, no TRACK_PARAM (pan by select / restore) ok
+v5: INFO ends with the protocol version 5                        ok
+v5 command numbers preserved; INFO advertises v7                 ok
+v5: CHORD, DUST, DUCK, FILT, ROLL, NEW (mock == params.c)        ok
+v5: SWING 50..75 %, FILT LP / OFF / HP, PCT of the range         ok
+v5: STEP_SET / STEP_GET level and ratchet bytes (8 bits each), none for an old step ok
+v5: DRUM_STEP round trip (16 lanes, levels, ratchets)            ok
+v5: the drum track through TRACK_STEP: lanes <-> GM notes        ok
+v5: the 16 lanes (kick .. cowbell), 4 levels                     ok
+v5: lane notes == drums.c LANE_NOTE                              ok
+v5: the drum track's KIT (37 kits, == drums.c)                   ok
+v5: TRACK reports the soloed tracks                              ok
+v5: no unmatched replies                                         ok
+v5: older firmware -> proto 0, no DRUM_STEP (the editor keeps GM notes) ok
+editor: 7 tabs, one panel each (sound sequencer tracks library samples projects settings) ok
+editor: last tab in localStorage (try/catch) and in the URL hash ok
+editor: every string in ja and en (170 used)                     ok
+editor: page script compiles                                     ok
+editor: no colours beyond the black / white tokens in the new styles ok
+editor: every icon name is in GLYPH (37 used)                    ok
+editor: fukiai.ttf and FUKIAI-LICENSE.txt next to editor.html    ok
+editor: icons hidden until the font has loaded                   ok
+samples: editor == sampleio.py (4 WAV formats, 7737 B)           ok
+chop: hits found (8 of 8, each within 3 ms of its attack)        ok
+chop: low sensitivity keeps the hard hits only                   ok
+chop: a TAP 35 ms late / 30 ms early lands on its hit; away from hits it stays ok
+chop: grid (16 beats at 90 BPM) and equal parts                  ok
+chop: chops end at the next marker or the max length             ok
+chop: one key each from C4, levels kept (a ghost stays quiet), faded in ok
+chop: one chop over the whole keyboard                           ok
+chop: slot header (8 zones, one key each)                        ok
+chop: WAV writer round trip                                      ok
+chop: ZIP of the WAVs (Python reads it)                          ok
+fm1pkg.js logicalImage                                           ok
+fm1pkg.js productOf                                              ok
+fm1ota.js: install: running firmware -> loader -> Felucca (11 reads) ok
+fm1ota.js: recovery mode -> loader -> normal firmware            ok
+fm1ota.js: boot into recovery is not reported as successful installation ok
+fm1ota.js: unplugged during the write -> stops at once           ok
+fm1ota.js: unplugged in step 1 -> error code 'lost'              ok
+fm1ota.js: no device -> error code 'notfound'                    ok
+fm1ota.js: another firmware's loader is never resumed ('foreign') ok
+web tests passed
+== Sound page: selected-slot replacement and cancellation
+PASS: empty slot, overwrite confirmation, preserve/rename, cancel, drum/busy guards; one selected slot only.
+PASS: external JSON, HTTPS and credentials guards, HTTP/CORS/non-JSON/size errors; controls recover.
+== DX7 / VA: routing, filters, release and parameter bounds
+PASS: 6656 DX7/VA cases, all MIDI notes, 32 FM routings, 6 LFO waves, 5 VA waves / 4 filters, release and bounds
+== external DX7 / JSON import and payload round trip
+PASS: FM-1+VA backup FM extraction, VA exclusion, checksums and skipped counts.
+PASS: bank/single/multiple frames; checksum, truncation, unsupported format/device; JSON and slot payload preserve extended voice.
+PASS: non-DX7 bank voices never acquire a DX7 payload
+== factory replacement bindings and realtime scope drawing
+PASS: factory binding, duplicate rejection, rewrite preservation, unbind, all tracks, EDIT live scope, 6 operators / all 22 fields, packed masks, save/load, engine page filtering
+== batch replacement preflight and interruption
+PASS: whole-batch preflight, bounds, ordered replacement, stop on flash failure
+== full DX7 parameter controls
+PASS: 6 operators + 19 globals, packed bit preservation, invalid edit rejection, algorithm 1-based display.
+ALL HOST TESTS PASSED
