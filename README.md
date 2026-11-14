@@ -530,3 +530,5 @@ FX 的白键 1–16：LOOP 1/4、LOOP 1/8、LOOP 1/16、LOOP 1/32、STUTTER、RE
 源码包内执行 `build.sh` 编译；需要 Jieli 工具链，并设置 `JIELI_TOOLCHAIN` 与 `AC79_SDK`。执行 `tests/run_tests.sh` 做回归；`tools/export_factory_library.py` 从真实固件的预设加载过程生成 16 个引擎分类 JSON；`web/make_site.py` 生成 Pages 目录。
 
 电脑测试包含 ALG02 / ALG03 银行与工程迁移、工厂绑定/解除/重写/跨轨加载、波形绘制、批量预检查/边界/失败停止、原有引擎声音渲染保持、新增引擎渲染、128 个 MIDI 音高、DX7 的 32 算法、VA 的 5 波形与 4 滤波模式、外部文件校验、详细数据导出 / 写入和单槽覆盖。目标代码做 RAM / pool 容量及静态指令成本检查；本环境无法测量实际 MCU 最坏 CPU 负载或 USB / 音频硬件行为，仍需真机测试。
+
+You can also try SLOOP ALG in the browser, no flashing needed, in the free community [FM-1 Emulator](https://fm1-emulator.atst.tools/).
